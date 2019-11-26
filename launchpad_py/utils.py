@@ -2,16 +2,14 @@
 import launchpad_py as launchpad
 from collections import defaultdict
 
-#colours = {
-#    (0,0): #
-#    (0,1): # 
-#    (0,2): #
-#    (0,3): #
+OFF    = (0,0)
 #    (1,0): #
 #    (2,0): #
-#    (3,0): #
-#    (3,3):
-#
+RED    = (3,0)
+YELLOW = (3,3)
+#    (0,1): # 
+#    (0,2): #
+GREEN  = (0,3)
 #    (3,1): #
 #    (2,1): #
 #    (3,2): #
@@ -20,7 +18,6 @@ from collections import defaultdict
 #    (2,3): #
 #    (2,2): #
 #    (1,1):
-#}
 
 def tweak(rg):
     """
