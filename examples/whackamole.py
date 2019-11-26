@@ -1,66 +1,8 @@
 #!/usr/bin/env python3
-import launchpad_py as launchpad
+from launchpad_py.utils import *
 import random
 from time import sleep
-
-class LaunchpadPlease():
-    """
-    Makes a launchpad connection, and handles setup/shutdown.
-    Opens an emulator (LaunchpadEmu) if none is available.
-    """
-    def __enter__(self):
-        try:
-            self.lp = launchpad.Launchpad()
-            self.lp.Open()
-            self.lp.ButtonFlush()
-        except:
-            self.lp = launchpad.LaunchpadEmu()
-        return self.lp
-
-    def __exit__(self, type, value, traceback):
-        print("exiting with %s, %s, %s" % (type, value, traceback))
-        #self.lp.Reset() # turn all LEDs off
-        self.lp.Close() # close the Launchpad (will quit with an error due to a PyGame bug)
-
-
-class Colour:
-    def __init__(self, r, g, o=1):
-        self.r = r
-        self.g = g
-        self.o = o
-
-    def tweak(self):
-        return tweak((self.r, self.g))
-
-    def colour(self):
-        return (r, g)
-
-def tweak(rg):
-    """
-    makes the most minimally visible change to a colour.
-    there's a mathematically neat way of doing this that evades me right now
-        (i.e. don't change r/g ratios except if one of them is zero.)
-    """
-    (r, g) = rg
-    if r == 0 and g == 0:
-        return (0,0)
-    elif r == 1 and g == 1:
-        return (2,2)
-    elif r == 0:
-        if g == 1:
-            g+=1
-        else:
-            g -= 1
-    elif g == 0:
-        if r == 1:
-            r += 1
-        else:
-            r -= 1
-    else:
-        r -= 1
-        g -= 1
-    return (r, g)
-
+from sys import argv
 
 class Palette(dict):
 
@@ -75,14 +17,14 @@ class Palette(dict):
         (6,0) : (0,0), #
         (7,0) : (0,0),
 
-        (8,1) : (0,0), #
-        (8,2) : (0,0), #
-        (8,3) : (0,0), #
-        (8,4) : (0,0), #
-        (8,5) : (0,0), #
-        (8,6) : (0,0), #
-        (8,7) : (0,0), #
-        (8,8) : (0,0),
+    #    (8,1) : (0,0), #
+    #    (8,2) : (0,0), #
+    #    (8,3) : (0,0), #
+    #    (8,4) : (0,0), #
+    #    (8,5) : (0,0), #
+    #    (8,6) : (0,0), #
+    #    (8,7) : (0,0), #
+    #    (8,8) : (0,0),
     }
 
     selected = None
@@ -144,10 +86,13 @@ class Score(Palette):
 
     def __init__(self, lp):
         self.count = 0
+        self.lastcount = 0
         super( Score, self ).__init__(lp)
 
     def paint(self, blink=False):
-        print("Score is %s" % self.count)
+        if self.lastcount != self.count:
+            self.lastcount = self.count
+            print("Score is %s!" % self.count)
         i = 0
         for (k, v) in self.items():
             (x, y) = k
@@ -186,51 +131,64 @@ if __name__ == '__main__':
         squash = Colour(3,3)
         mole = Colour(3, 0)
         hill = Colour(1, 0)
-        (mx, my) = (None, None) # mole position
+        easy_loc = (8,8)
+        mpos = (None, None) # mole position
         squashed = False
+        easy = None
+        ticks = 0 # since last squash
 
-        print(lp)
         while True:
-            #palette.paint()
             score.paint()
             # make a mole
-            mchance = ( random.choice(range(80)) < 1 )
+            mchance = ( random.choice(range(100-(ticks))) < 1 )
             if mchance:
-                if mx != None:
-                    lp.LedCtrlXY(mx, my, hill.r, hill.g)
-                print("Mole at %s, %s!" % (mx, my))
-                mx = random.choice(range((8)))
-                my = random.choice(range(1,9))
-                lp.LedCtrlXY(mx, my, mole.r, mole.g)
+                ticks = 0
+                if mpos[0] != None:
+                    lp.LedCtrlXY(*mpos, hill.r, hill.g)
+                print("Mole at %s, %s!" % mpos)
+                mpos = (random.choice(range((8))),
+                        random.choice(range(1,9)))
+                lp.LedCtrlXY(*mpos, mole.r, mole.g)
                 if squashed:
                     squashed = False
                 else:
-                    score.dec()
+                    if not easy:
+                        score.dec()
+            else:
+                ticks += 1
 
-            sleep(0.02)
+            sleep(0.1)
+
             if not lp.ButtonChanged():
-                sleep(0.02)
+                continue
 
             # process all buttons in one go
             while True: 
                 if score.count >= 8:
                     score.win()
-                    for x in range(8):
-                        for y in range(1,9):
-                            lp.LedCtrlXY(x, y, field.r, field.g)
+                    lp.fill(field.r, field.g)
                 try:
-                    (x, y, v) = lp.ButtonStateXY() # raises ValueError when state is None
-                    print("+" if v else "-", x, y)
-                    # on press; discard release
-                    if v and (x, y) not in score:
-                        if (x,y) == (mx, my):
+                    (x, y, pressed) = lp.ButtonStateXY() # raises ValueError when state is None
+                    print("+" if pressed else "-", x, y)
+                    # (always on press; discard release)
+                    # colour the easy button
+                    if easy == None or pressed and (x, y) == easy_loc:
+                        print("esay mode: %s" % easy)
+                        easy = not easy
+                        colour = GREEN if easy else RED
+                        print("painting: easy_loc, colour, easy")
+                        lp.LedCtrlXY(*easy_loc, *colour)
+                    # handle squashing or missing
+                    elif pressed and (x, y) not in score:
+                        if (x,y) == mpos:
                             lp.LedCtrlXY(x, y, squash.r, squash.g)
                             if not squashed:
                                 score.inc()
                                 squashed = True
                         else:
                             lp.LedCtrlXY(x, y, field.r, field.g)
-                            score.dec()
+                            if not easy:
+                                score.dec()
                         score.paint()
                 except ValueError: # when state == None
                     break
