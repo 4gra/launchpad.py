@@ -2,27 +2,27 @@
 from launchpad_py.utils import *
 from time import sleep
 
-class Palette(dict):
 
+class Palette(dict):
     # hard-coded palette, ordered to be pretty
     palette = {
-        (0,0) : (0,0), #
-        (1,0) : (0,1), # 
-        (2,0) : (0,2), #
-        (3,0) : (0,3), #
-        (4,0) : (1,0), #
-        (5,0) : (2,0), #
-        (6,0) : (3,0), #
-        (7,0) : (3,3),
+        (0, 0): (0, 0),  #
+        (1, 0): (0, 1),  #
+        (2, 0): (0, 2),  #
+        (3, 0): (0, 3),  #
+        (4, 0): (1, 0),  #
+        (5, 0): (2, 0),  #
+        (6, 0): (3, 0),  #
+        (7, 0): (3, 3),
 
-        (8,1) : (3,1), #
-        (8,2) : (2,1), #
-        (8,3) : (3,2), #
-        (8,4) : (1,3), #
-        (8,5) : (1,2), #
-        (8,6) : (2,3), #
-        (8,7) : (2,2), #
-        (8,8) : (1,1),
+        (8, 1): (3, 1),  #
+        (8, 2): (2, 1),  #
+        (8, 3): (3, 2),  #
+        (8, 4): (1, 3),  #
+        (8, 5): (1, 2),  #
+        (8, 6): (2, 3),  #
+        (8, 7): (2, 2),  #
+        (8, 8): (1, 1),
     }
 
     selected = None
@@ -37,14 +37,14 @@ class Palette(dict):
         self.lp = lp
         self.paint()
 
-    #def swap(self):
+    # def swap(self):
     #    self.swaps += [ self.selected ]
 
     def paint(self, blink=None):
         if not self.painted:
             i = 0
             for k, v in self.palette.items():
-                i+=1
+                i += 1
                 self.lp.LedCtrlXY(*k, *v)
             self.painted = True
         if self.selected and self.selected != self.painted:
@@ -53,14 +53,14 @@ class Palette(dict):
             if self.held > 50:
                 self.held = 0
                 self.lp.fill(*self[self.selected])
-            if self.selected != (0,0):
-                if blink != None:
+            if self.selected != (0, 0):
+                if blink is not None:
                     self.blink = blink
                 if self.blink > 0:
-                    colour = self[(self.selected)]
+                    colour = self[self.selected]
                     self.blink -= 1
                 else:
-                    colour = tweak(self[(self.selected)])
+                    colour = tweak(self[self.selected])
                     self.blink = self.BLINK_TIME
                     print(" (blink %d)" % self.held)
                 self.lp.LedCtrlXY(*self.selected, *colour)
@@ -68,20 +68,21 @@ class Palette(dict):
     def unselect(self, x, y):
         self.held = 0
         self.paint(10)
-        return self[(x,y)]
+        return self[(x, y)]
 
     def select(self, x, y):
-        self.selected = (x,y)
+        self.selected = (x, y)
         self.held = 1
         self.paint(5)
-        return self[(self.selected)]
+        return self[self.selected]
 
-if __name__ == '__main__':
+
+def game_loop():
     with LaunchpadPlease() as lp:
         palette = Palette(lp)
         timer = Timer(lp)
-        colour = (0,0)
-        #print(lp)
+        colour = (0, 0)
+        # print(lp)
         while True:
             timer.inc()
             palette.paint()
@@ -89,10 +90,10 @@ if __name__ == '__main__':
                 sleep(0.02)
             else:
                 # process all buttons in one go
-                while True: 
+                while True:
 
                     try:
-                        (x, y, v) = lp.ButtonStateXY() # raises ValueError when state is None
+                        (x, y, v) = lp.ButtonStateXY()  # raises ValueError when state is None
                         print("+" if v else "-", x, y)
                         if (x, y) in palette:
                             if v:
@@ -100,8 +101,12 @@ if __name__ == '__main__':
                             else:
                                 colour = palette.unselect(x, y)
                             print("Get", x, y, colour)
-                        elif v: # on press; discard release
-                            print("Set", x, y, colour) # TODO: print in colour
+                        elif v:  # on press; discard release
+                            print("Set", x, y, colour)  # TODO: print in colour
                             lp.LedCtrlXY(x, y, *colour)
-                    except ValueError: # when state == None
+                    except ValueError:  # when state == None
                         break
+
+
+if __name__ == '__main__':
+    game_loop()

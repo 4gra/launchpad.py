@@ -2,14 +2,16 @@
 import launchpad_py as launchpad
 from collections import defaultdict
 
-OFF    = (0,0)
+from launchpad_py import LaunchpadEmu
+
+OFF = (0, 0)
 #    (1,0): #
 #    (2,0): #
-RED    = (3,0)
-YELLOW = (3,3)
+RED = (3, 0)
+YELLOW = (3, 3)
 #    (0,1): # 
 #    (0,2): #
-GREEN  = (0,3)
+GREEN = (0, 3)
 #    (3,1): #
 #    (2,1): #
 #    (3,2): #
@@ -19,6 +21,7 @@ GREEN  = (0,3)
 #    (2,2): #
 #    (1,1):
 
+
 def tweak(rg):
     """
     makes the most minimally visible change to a colour.
@@ -27,12 +30,12 @@ def tweak(rg):
     """
     (r, g) = rg
     if r == 0 and g == 0:
-        return (0,0)
+        return 0, 0
     elif r == 1 and g == 1:
-        return (2,2)
+        return 2, 2
     elif r == 0:
         if g == 1:
-            g+=1
+            g += 1
         else:
             g -= 1
     elif g == 0:
@@ -43,7 +46,8 @@ def tweak(rg):
     else:
         r -= 1
         g -= 1
-    return (r, g)
+    return r, g
+
 
 class Colour:
     """
@@ -59,17 +63,17 @@ class Colour:
         return tweak((self.r, self.g))
 
     def colour(self):
-        return (r, g)
+        return self.r, self.g
 
 
 class CachingLaunchpad(launchpad.Launchpad):
-    led = defaultdict(lambda: (0,0)) # LED states
-    btn = {} # button states??
+    led = defaultdict(lambda: (0, 0))  # LED states
+    btn = {}  # button states??
     PRINT_CTR = None
     ctr = 0
 
-    def __init__(self, printctr=500):
-        self.printctr = printctr
+    def __init__(self, print_ctr=500):
+        self.print_ctr = print_ctr
         self.ctr = 0
         super(CachingLaunchpad, self).__init__()
 
@@ -78,33 +82,34 @@ class CachingLaunchpad(launchpad.Launchpad):
         if every_led:
             raise NotImplementedError
         for x in range(8):
-            for y in range(1,9):
+            for y in range(1, 9):
                 self.LedCtrlXY(x, y, r, g)
 
     def LedCtrlXY(self, x, y, r, g):
-        #self.led[(x,y)] = Colour(r,g)
-        self.led[(x, y)] = (r,g)
-        if self.PRINT_CTR != None and self.ctr > self.PRINT_CTR:
+        # self.led[(x,y)] = Colour(r,g)
+        self.led[(x, y)] = (r, g)
+        if self.PRINT_CTR is not None and self.ctr > self.PRINT_CTR:
             self.ctr = 0
             print(self)
         else:
             self.ctr += 1
         return super(CachingLaunchpad, self).LedCtrlXY(x, y, r, g)
 
+    # noinspection PyPep8Naming
     def LedGetXY(self, x, y):
         return self.led[(x, y)]
 
     def __getitem__(self, xy):
         return self.LedGetXY(*xy)
 
-    def cellvalue(self, x, y):
+    def cell_value(self, x, y):
         """
         Prints out a representation of a cell value.
         TODO: use ANSI colours.
         """
         if x == 8 and y == 0:
             return "--"
-        (r, g) = self[(x,y)]
+        (r, g) = self[(x, y)]
         return "%s%s" % (r, g)
 
     def __repr__(self):
@@ -114,17 +119,20 @@ class CachingLaunchpad(launchpad.Launchpad):
         out = "\n"
         for y in range(9):
             out += "+--+--+--+--+--+--+--+--+--+\n"
-            out += ("|"+"|".join([self.cellvalue(x,y) for x in range(9)])+"|\n")
-        out += ("+--+--+--+--+--+--+--+--+--+\n")
+            out += ("|" + "|".join([self.cell_value(x, y) for x in range(9)]) + "|\n")
+        out += "+--+--+--+--+--+--+--+--+--+\n"
         return out
 
-class LaunchpadPlease():
+
+class LaunchpadPlease:
     """
     Makes a launchpad connection, and handles setup/shutdown.
     Opens an emulator (LaunchpadEmu) if none is available.
     """
+
     def __init__(self, reset_on_close=False):
         self.reset_on_close = reset_on_close
+
     def __enter__(self):
         try:
             self.lp = CachingLaunchpad()
@@ -137,16 +145,16 @@ class LaunchpadPlease():
     def __exit__(self, type, value, traceback):
         print("exiting with %s, %s, %s" % (type, value, traceback))
         if self.reset_on_close:
-            self.lp.Reset() # turn all LEDs off
-        self.lp.Close() # close the Launchpad (will quit with an error due to a PyGame bug)
+            self.lp.Reset()  # turn all LEDs off
+        self.lp.Close()  # close the Launchpad (will quit with an error due to a PyGame bug)
 
 
-class Timer():
+class Timer:
     """
     something something a timer
     """
     SLEEP_TIME = 5000
-        
+
     def __init__(self, lp):
         self.ticks = 0
         self.lp = lp
@@ -166,4 +174,3 @@ class Timer():
         self.ticks += 1
         if self.ticks >= self.SLEEP_TIME:
             self.sleep = True
-
