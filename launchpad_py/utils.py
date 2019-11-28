@@ -2,8 +2,6 @@
 import launchpad_py as launchpad
 from collections import defaultdict
 
-from launchpad_py import LaunchpadEmu
-
 OFF = (0, 0)
 #    (1,0): #
 #    (2,0): #
@@ -53,6 +51,8 @@ class Colour:
     """
     colour class.
     experimental opacity or something?
+    TODO: hand-crafted mappings for each colour, because there's
+            no real correspondence between RGB and some LEDs.
     """
     def __init__(self, r, g, o=1):
         self.r = r
@@ -62,8 +62,21 @@ class Colour:
     def tweak(self):
         return tweak((self.r, self.g))
 
-    def colour(self):
+    def rg(self):
         return self.r, self.g
+
+    def rgbhex(self):
+        diff = max(3-abs(self.r-self.g), 2)
+        return "#{:02x}{:02x}00".format(self.r*85, self.g*85, diff*85)
+
+
+def fill(lp, r, g, every_led=False):
+    """fills the board with a single colour"""
+    if every_led:
+        raise NotImplementedError
+    for x in range(8):
+        for y in range(1, 9):
+            lp.LedCtrlXY(x, y, r, g)
 
 
 class CachingLaunchpad(launchpad.Launchpad):
@@ -76,14 +89,6 @@ class CachingLaunchpad(launchpad.Launchpad):
         self.print_ctr = print_ctr
         self.ctr = 0
         super(CachingLaunchpad, self).__init__()
-
-    def fill(self, r, g, every_led=False):
-        """fills the board with a single colour"""
-        if every_led:
-            raise NotImplementedError
-        for x in range(8):
-            for y in range(1, 9):
-                self.LedCtrlXY(x, y, r, g)
 
     def LedCtrlXY(self, x, y, r, g):
         # self.led[(x,y)] = Colour(r,g)
@@ -128,6 +133,7 @@ class LaunchpadPlease:
     """
     Makes a launchpad connection, and handles setup/shutdown.
     Opens an emulator (LaunchpadEmu) if none is available.
+    TODO: save/restore state :)
     """
 
     def __init__(self, reset_on_close=False):
@@ -139,7 +145,7 @@ class LaunchpadPlease:
             self.lp.Open()
             self.lp.ButtonFlush()
         except:
-            self.lp = LaunchpadEmu()
+            self.lp = launchpad.LaunchpadEmu()
         return self.lp
 
     def __exit__(self, type, value, traceback):

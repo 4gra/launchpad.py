@@ -166,7 +166,7 @@ def game_loop():
             while True:
                 if score.count >= 8:
                     score.win()
-                    lp.fill(field.r, field.g)
+                    fill(lp, field.r, field.g)
                 try:
                     (x, y, pressed) = lp.ButtonStateXY()  # raises ValueError when state is None
                     print("+" if pressed else "-", x, y)
