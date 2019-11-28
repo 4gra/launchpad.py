@@ -1,8 +1,9 @@
-import time
-import PySimpleGUIQt as sg
 from collections import deque, defaultdict
-from launchpad_py.utils import Colour
+
+import PySimpleGUIQt as sg
+
 from launchpad_py.launchpad import LaunchpadBase
+from launchpad_py.utils import Colour
 
 # Because Qt has different ideas about what size a button, or possibly a character, should be.
 if sg.__name__ == 'PySimpleGUIQt':
@@ -157,10 +158,10 @@ class LaunchpadEmu(LaunchpadBase):
         :param timeout:
         """
         event, values = self.window.read(0)
-        if event == sg.TIMEOUT_KEY:
-            return
-        elif event in (None, 'Quit'):  # if user closes window or clicks cancel
+        if event is None: # if user closes window
             self.window.close()
+        elif event == sg.TIMEOUT_KEY:
+            return
         else:
             self.press(*event)
             print(event, ": ", values)
@@ -174,4 +175,4 @@ class LaunchpadEmu(LaunchpadBase):
 
 
 if __name__ == '__main__':
-    run()
+    LaunchpadEmu().run()

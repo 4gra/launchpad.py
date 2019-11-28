@@ -13,5 +13,5 @@ setup(
 	license = "CC BY 4.0",
 	keywords = "novation launchpad midi",
 	url = "https://github.com/FMMT666/launchpad.py",
-	packages = ["launchpad_py"],
+	packages = ["launchpad_py"], install_requires=['PySimpleGUIQt']
 )
