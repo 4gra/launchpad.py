@@ -52,7 +52,7 @@ class Palette(dict):
                 self.held += 1
             if self.held > 50:
                 self.held = 0
-                self.fill(self.lp, *self[self.selected])
+                fill(self.lp, *self[self.selected])
             if self.selected != (0, 0):
                 if blink is not None:
                     self.blink = blink
