@@ -66,8 +66,9 @@ class Colour:
         return self.r, self.g
 
     def rgbhex(self):
-        diff = max(3-abs(self.r-self.g), 2)
-        return "#{:02x}{:02x}00".format(self.r*85, self.g*85, diff*85)
+        #diff = max(3-abs(self.r-self.g), 2)
+        b = 3 - (self.r + self.g)
+        return "#{:02x}{:02x}00".format(self.r*85, self.g*85, b*85)
 
 
 def fill(lp, r, g, every_led=False):
@@ -80,6 +81,10 @@ def fill(lp, r, g, every_led=False):
 
 
 class CachingLaunchpad(launchpad.Launchpad):
+    """
+    a launchpad wrapper that stores last colour results.
+    Unfinished; probably will be merged into the LaunchpadEmu
+    """
     led = defaultdict(lambda: (0, 0))  # LED states
     btn = {}  # button states??
     PRINT_CTR = None
@@ -131,21 +136,32 @@ class CachingLaunchpad(launchpad.Launchpad):
 
 class LaunchpadPlease:
     """
-    Makes a launchpad connection, and handles setup/shutdown.
+    Makes a launchpad connection, and handles setup/shutdown in a 'with' block.
     Opens an emulator (LaunchpadEmu) if none is available.
     TODO: save/restore state :)
+
+    Usage: with LaunchPadPlease() as lp: [...]
     """
 
-    def __init__(self, reset_on_close=False):
+    def __init__(self, reset_on_close=False, emulate=None):
+        """
+        :param reset_on_close: reset display (to zero) once application quits?
+        :param emulate: always use the emulator
+        """
         self.reset_on_close = reset_on_close
+        self.always_emulate = emulate
 
     def __enter__(self):
-        try:
-            self.lp = CachingLaunchpad()
-            self.lp.Open()
-            self.lp.ButtonFlush()
-        except:
+        if self.always_emulate is True:
             self.lp = launchpad.LaunchpadEmu()
+        else:
+            try:
+                self.lp = CachingLaunchpad()
+                self.lp.Open()
+                self.lp.ButtonFlush()
+            except:
+                if self.always_emulate is not False:
+                    self.lp = launchpad.LaunchpadEmu()
         return self.lp
 
     def __exit__(self, type, value, traceback):
