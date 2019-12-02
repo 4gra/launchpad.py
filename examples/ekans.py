@@ -98,20 +98,8 @@ class Snake:
 
     def random_move(self):
         """
-        move the snake randomly.
-        # TODO: 'stay still' as a choice?
-        """
-        snapshot = self.pixels()[1:]  # ignore outgoing tail position
-        new_heads = [pos for pos in neighbours(*self.head) if pos not in snapshot]
-        # lookahead, I should do this much better
-        if len(new_heads) == 2:
-            new_heads = [h for h in new_heads if len(neighbours(*h)) != 2]
-        self.move(*random.choice(new_heads))
-
-    def xrandom_move(self):
-        """
-        the older, more robust way of moving randomly that will work
-        indefinitely for a snake of length <= 6
+        Move randomly.  The minimal lookahead will work indefinitely for a
+        snake of length <= 6
         """
         self.prev = self.pixels()
         self.tail.append(self.head)
