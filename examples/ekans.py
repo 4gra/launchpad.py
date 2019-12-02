@@ -80,7 +80,6 @@ class Snake:
             self.tail.popleft()
         # moved
         self.head = x, y
-        # eat food
         if self.head in self.food:
             self.eat()
 
@@ -88,10 +87,13 @@ class Snake:
         return [pos for pos in neighbours(x,y) if pos not in self.pixels()[1:]]
 
     def random_move(self):
-        # generate new head position choices
+        """
+        move the snake randomly.
         # TODO: 'stay still' as a choice?
-        snapshot = self.pixels()[1:] # ignore outgoing tail position
+        """
+        snapshot = self.pixels()[1:]  # ignore outgoing tail position
         new_heads = [pos for pos in neighbours(*self.head) if pos not in snapshot]
+        # lookahead, I should do this much better
         if len(new_heads) == 2:
             new_heads = [h for h in new_heads if len(neighbours(*h)) != 2]
         self.move(*random.choice(new_heads))
@@ -108,7 +110,7 @@ class Snake:
         # generate new head position choices TODO: do this first and have 'stay still' as a choice
         new_heads = [pos for pos in neighbours(*self.head) if pos not in self.tail]
         # lookahead one move, that's really all that's required
-        # we should just special-case the corners but this works
+        # we should just special-case the corners but this worked in a pinch
         if len(new_heads) == 2:
             new_heads = [h for h in new_heads if len(neighbours(*h)) != 2]
         #print("Choices are {}, having excluded {}".format(new_heads, self.tail))

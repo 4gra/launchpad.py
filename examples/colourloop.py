@@ -62,7 +62,7 @@ class Palette(dict):
                 else:
                     colour = tweak(self[self.selected])
                     self.blink = self.BLINK_TIME
-                    print(" (blink %d)" % self.held)
+                    #print(" (blink %d)" % self.held)
                 self.lp.LedCtrlXY(*self.selected, *colour)
 
     def unselect(self, x, y):
@@ -102,7 +102,7 @@ def game_loop():
                                 colour = palette.unselect(x, y)
                             print("Get", x, y, colour)
                         elif v:  # on press; discard release
-                            print("Set", x, y, colour)  # TODO: print in colour
+                            print("Set", x, y, colour)  # TODO: print in colour!
                             lp.LedCtrlXY(x, y, *colour)
                     except ValueError:  # when state == None
                         break

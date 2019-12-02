@@ -6,10 +6,13 @@ from launchpad_py.utils import *
 import random
 from time import sleep
 
+empty = 0, 0
+point = 0, 3
+point_goal = 8
+
 
 class Score(dict):
-    # hard-coded palette, ordered to be pretty
-    palette = {
+    palette = { # scoreboard
         (0, 0): (0, 0),  #
         (1, 0): (0, 0),  #
         (2, 0): (0, 0),  #
@@ -18,18 +21,7 @@ class Score(dict):
         (5, 0): (0, 0),  #
         (6, 0): (0, 0),  #
         (7, 0): (0, 0),
-        #    (8,1) : (0,0), #
-        #    (8,2) : (0,0), #
-        #    (8,3) : (0,0), #
-        #    (8,4) : (0,0), #
-        #    (8,5) : (0,0), #
-        #    (8,6) : (0,0), #
-        #    (8,7) : (0,0), #
-        #    (8,8) : (0,0),
     }
-
-    empty = Colour(0, 0)
-    point = Colour(0, 3)
 
     def __init__(self, lp):
         self.count = 0
@@ -44,12 +36,11 @@ class Score(dict):
             self.lastcount = self.count
             print("Score is %s!" % self.count)
         i = 0
-        for (k, v) in self.items():
-            (x, y) = k
+        for (position, colour) in self.items():
             if blink is False and i < self.count:
-                self.lp.LedCtrlXY(x, y, self.point.r, self.point.g)
+                self.lp.LedCtrlXY(*position, *point)
             else:
-                self.lp.LedCtrlXY(x, y, self.empty.r, self.empty.g)
+                self.lp.LedCtrlXY(*position, *empty)
             i += 1
 
     def inc(self):
@@ -99,8 +90,10 @@ def game_loop():
                 if mole_pos[0] is not None:
                     lp.LedCtrlXY(*mole_pos, hill.r, hill.g)
                 print("Mole at %s, %s!" % mole_pos)
-                mole_pos = (random.choice(range(8)),
-                        random.choice(range(1, 9)))
+                mole_pos = (
+                    random.choice(range(8)),
+                    random.choice(range(1, 9))
+                )
                 lp.LedCtrlXY(*mole_pos, mole.r, mole.g)
                 if squashed:
                     squashed = False
@@ -117,7 +110,7 @@ def game_loop():
 
             # process all buttons in one go
             while True:
-                if score.count >= 2:
+                if score.count >= point_goal:
                     score.win()
                     fill(lp, field.r, field.g)
                 try:
