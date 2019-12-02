@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+"""
+Squashingham - a whack-a-mole type game.
+"""
 from launchpad_py.utils import *
 import random
 from time import sleep
