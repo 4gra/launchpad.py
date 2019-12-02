@@ -22,12 +22,16 @@ class LaunchpadEmu(LaunchpadBase):
     buttons = None # GUI button objects
     presses = None # queue of button presses
     values = None  # colour values
+    update_on_button = None
+    update_on_led = None
 
-    def __init__(self):
+    def __init__(self, update_on_button=True, update_on_led=False):
         self.initialise()
         self.window = self.gui_setup()
         LaunchpadBase.__init__(self)
         self.gui_update(timeout=0)
+        self.update_on_button = update_on_button
+        self.update_on_led = update_on_led
 
     def __delete__(self):
         pass
@@ -50,6 +54,7 @@ class LaunchpadEmu(LaunchpadBase):
             self.presses.append((x,y,False))
         else:
             self.presses.append((x,y,updown))
+        self.gui_update(timeout=0)
 
     # --- Launchpad bits ---------------------
     def Open(self, number=0, name="Launchpad"):
@@ -64,15 +69,16 @@ class LaunchpadEmu(LaunchpadBase):
     def ListAll(self):
         return ['Launchpad Emulator']
 
-    def LedCtrlXY(self, x, y, red, green ):
+    def LedCtrlXY(self, x, y, red, green):
         if x < 0 or x > 8 or y < 0 or y > 8 or (x == 8 and y == 0):
             raise ValueError("Invalid grid reference.")
         if red < 0 or red > 3 or green < 0 or green > 3:
             raise ValueError("Invalid colour setting.")
         c = Colour(red, green)
         self.values[x,y] = c
-        self.buttons[x,y].Update(text = "#", button_color = ('black', c.rgbhex()))
-        self.gui_update(timeout=0)
+        self.buttons[x,y].Update(text="#", button_color=('black', c.rgbhex()))
+        if self.update_on_led:
+            self.gui_update(timeout=0)
 
     def LedAllOn( self, colorcode = None ):
         if colorcode == 0:
@@ -85,9 +91,10 @@ class LaunchpadEmu(LaunchpadBase):
 
     def ButtonChanged(self):
         """
-        also performs a sneaky, non-blocking GUI update
+        also performs a sneaky, non-blocking GUI update if permitted
         """
-        self.gui_update(timeout=0)
+        if self.update_on_button:
+            self.gui_update(timeout=0)
         return len(self.presses) > 0
 
     def ButtonStateXY(self):
