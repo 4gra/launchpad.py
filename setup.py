@@ -12,6 +12,6 @@ setup(
 	author_email = "fmmt666@users.noreply.github.com",
 	license = "CC BY 4.0",
 	keywords = "novation launchpad midi",
-	url = "https://github.com/FMMT666/launchpad.py",
+	url = "https://github.com/4gra/launchpad.py",
 	packages = ["launchpad_py"], install_requires=['PySimpleGUIQt']
 )
