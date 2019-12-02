@@ -1,4 +1,14 @@
 #!/usr/bin/env python3
+"""
+A tiny, tiny drawing programme and a fun programming toy.
+
+Copyright (C) 2019, https://github.com/4gra/launchpad.py
+Based entirely on lovely work of https://github.com/FMMT666/launchpad.py
+
+This program comes with ABSOLUTELY NO WARRANTY; for details see included LICENCE.
+This is free software, and you are welcome to redistribute it under certain
+conditions; view the included file LICENCE for details.
+"""
 import launchpad_py as launchpad
 from time import sleep
 

@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+"""
+Some utilities for writing stuff on the launchpad.
+"""
 import launchpad_py as launchpad
 from collections import defaultdict
 

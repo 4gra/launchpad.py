@@ -1,3 +1,6 @@
+"""
+A graphical launchpad emulator using FMMT666's interface.
+"""
 from collections import deque, defaultdict
 
 import PySimpleGUIQt as sg
