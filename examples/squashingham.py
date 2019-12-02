@@ -118,10 +118,13 @@ class Score(Palette):
         # blink for N times, then reset the board
         blink = 5
         while blink > 0:
-            self.paint(True)
-            sleep(0.25)
-            self.paint(False)
-            sleep(0.25)
+            for state in [True, False]:
+                self.paint(state)
+                sleep(0.25)
+                # discard presses whilst 'winning'
+                if self.lp.ButtonChanged():
+                    while self.lp.ButtonStateXY():
+                        pass
             blink -= 1
         self.count = 0
 
@@ -167,7 +170,7 @@ def game_loop():
 
             # process all buttons in one go
             while True:
-                if score.count >= 8:
+                if score.count >= 2:
                     score.win()
                     fill(lp, field.r, field.g)
                 try:
