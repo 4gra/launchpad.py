@@ -1,0 +1,4 @@
+# this runs far too often, but rather than figure out which subdevice to run
+# I've just added locking to the script...
+# Also MODE is not required but it's handy on this single-purpose box.
+SUBSYSTEMS=="usb", ATTRS{idVendor}=="1235", ATTRS{idProduct}=="0036", MODE="0666", RUN+="/usr/local/bin/colourloop"

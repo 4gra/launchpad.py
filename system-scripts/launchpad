@@ -1,0 +1,4 @@
+#!/bin/bash
+su pi flock -w 10 -n /dev/shm/launchpad.lock -c 'cd /home/pi/LAUNCHPAD/launchpad.py &&
+PYTHONPATH=$PYTHONPATH:/home/pi/LAUNCHPAD/launchpad.py/build/lib/ ./examples/colourloop.py
+'
