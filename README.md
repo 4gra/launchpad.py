@@ -10,7 +10,7 @@ This fork adds a few features for my own use, but those who happen across this f
 
    * Some new features:
       - `LaunchpadPlease`, a `with`-supporting class loader for Launchpad code
-      - `LaunchpadEmu`, a graphical emmulation of a Launchpad Mini using [`pysimplegui`][52]
+      - `LaunchpadEmu`, a graphical emulation of a Launchpad Mini using [`pysimplegui`][52]
   
    * Some new examples:
       - `colourloop`, a versatile colouring/counting application
