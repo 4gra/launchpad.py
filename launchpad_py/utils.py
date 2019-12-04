@@ -156,10 +156,10 @@ class LaunchpadPlease:
 
     def __enter__(self):
         if self.always_emulate is True:
-            self.lp = launchpad.LaunchpadEmu()
+            self.lp = LaunchpadEmu()
         else:
             try:
-                self.lp = CachingLaunchpad()
+                self.lp = Launchpad()
                 self.lp.Open()
                 self.lp.ButtonFlush()
             except:
