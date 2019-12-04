@@ -13,25 +13,55 @@ from launchpad_py.utils import *
 import mpd
 from time import sleep
 
+stations = {
+    0:  'BBC_Radio_1',
+    1:  'BBC_Radio_2',
+    2:  'BBC_Radio_3',
+    3:  'BBC_Radio_4',
+    5:  'BBC_6_Music',
+    7:  None,
+}
+
 class Radio:
     def __init__(self):
+        self.patience = 100
         self.client = mpd.MPDClient(use_unicode=True)
-        self.client.connect("localhost", 6600)
+        self.reconnect()
+
+    def reconnect(self):
+        if self.client:
+            try:
+                client.close()
+            except:
+                pass
+        try:
+            self.client.connect("localhost", 6600)
+            return True
+        except mpd.base.ConnectionError:
+            return False
 
     def play(self, station=None):
         #for entry in self.client.lsinfo("/"):
         #    print("%s" % entry)
         #for key, value in self.client.status().items():
         #    print("%s: %s" % (key, value))
-        if station:
-            self.client.clear()
-            self.client.load(station)
-            self.client.play()
-        else:
-            self.client.stop()
+        while self.patience:
+            try:
+                if station:
+                    self.client.clear()
+                    self.client.load(station)
+                    self.client.play()
+                else:
+                    self.client.stop()
+                self.patience = 100
+                return
+            except mpd.base.ConnectionError:
+                self.patience -= 1
+                self.reconnect()
+        raise IOError("ran out of patience trying to contact MPD")
+
         # mpc clear; mpc load BBC_Radio_3; mpc play
 
-    #client.close()
 
 
 class Palette(dict):
@@ -39,19 +69,12 @@ class Palette(dict):
     palette = {
         (0, 0): (0, 0),  #
         (1, 0): (0, 0),  #
-        (2, 0): (0, 1),  #
-        (3, 0): (0, 1),  #
+        (2, 0): (0, 0),  #
+        (3, 0): (0, 0),  #
         (4, 0): (0, 0),  #
-        (5, 0): (0, 1),  #
+        (5, 0): (0, 0),  #
         (6, 0): (0, 0),  #
         (7, 0): (0, 0),
-    }
-
-    stations = {
-        0:  None,
-        2:  'BBC_Radio_3',
-        3:  'BBC_Radio_4',
-        5:  'BBC_6_Music'
     }
 
     selected = None
@@ -68,11 +91,16 @@ class Palette(dict):
             i = 0
             for k, v in self.palette.items():
                 i += 1
-                if self.selected and k == self.selected:
+                (x, y) = k
+                print(self.selected, k)
+                if self.selected and self.selected == k:
                     #colour = tweak(self[self.selected])
-                    colour = (0,3)
+                    colour = (1, 1)
+                elif x in stations and stations[x]:
+                    colour = (0, 1)
                 else:
-                    self.lp.LedCtrlXY(*k, *v)
+                    colour = (0, 0)
+                self.lp.LedCtrlXY(*k, *colour)
             self.painted = True
 
     def unselect(self, x, y):
@@ -83,19 +111,19 @@ class Palette(dict):
     def select(self, x, y):
         if self.selected == (x,y):
             return False
-        old = self.selected
+        self.painted = False
         self.selected = (x, y)
         self.held = 1
         self.paint()
         try:
-            self.station = self.stations[x]
+            self.station = stations[x]
             return self.station
         except:
             return None
 
 
 def game_loop():
-    with LaunchpadPlease() as lp:
+    with LaunchpadPlease(reset_on_close=True) as lp:
         palette = Palette(lp)
         radio = Radio()
         timer = Timer(lp)
