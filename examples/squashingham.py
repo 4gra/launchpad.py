@@ -75,7 +75,7 @@ class Score(dict):
 
 
 def game_loop():
-    with LaunchpadPlease() as lp:
+    with LaunchpadPlease(reset_on_close=True) as lp:
         # palette = Palette(lp)
         score = Score(lp)
         field = Colour(0, 0)
