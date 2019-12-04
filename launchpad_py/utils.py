@@ -146,7 +146,7 @@ class LaunchpadPlease:
     Usage: with LaunchPadPlease() as lp: [...]
     """
 
-    def __init__(self, reset_on_close=False, emulate=None):
+    def __init__(self, reset_on_close=False, emulate=False):
         """
         :param reset_on_close: reset display (to zero) once application quits?
         :param emulate: always use the emulator
@@ -155,11 +155,12 @@ class LaunchpadPlease:
         self.always_emulate = emulate
 
     def __enter__(self):
+        self.lp = None
         if self.always_emulate is True:
             self.lp = LaunchpadEmu()
         else:
             try:
-                self.lp = Launchpad()
+                self.lp = launchpad.Launchpad()
                 self.lp.Open()
                 self.lp.ButtonFlush()
             except:
