@@ -3,6 +3,27 @@ launchpad.py
 
 A [Novation Launchpad][1] control suite for [Python][2].
 
+4gra fork README
+================
+
+My ([4gra][51]) fork adds a few features for my own user, but those who happen across this fork should probably go to the source unless they particularly want...
+
+   * Some new features:
+      - `LaunchpadPlease`, a `with`-supporting class loader for Launchpad code
+      - `LaunchpadEmu`, a graphical emmulation of a Launchpad Mini using [`pysimplegui`][52]
+  
+   * Some new examples:
+      - `colourloop`, a versatile colouring/counting application
+      - `ekans`, a reverse-snake-like game, where you feed the (n)ever-growing reptile
+      - `squashingham`, a whack-a-mole type game which most closely resembles a working application
+      - `radio`, an utterly unfinished radio chooser inteface for [`mpd`][53]
+      
+...Perhaps I'll make pull requests but since I've been lazy and used PEP8 and ignored upstream coding styles, perhaps not ;)
+
+upstream README, continued...
+=============================
+
+
 If you ever dreamed of using your Launchpad for completely other stuff than music: Welcome !-)
 
 Compatible with most [tm] single board computers.
@@ -2404,3 +2425,6 @@ FMMT666(ASkr)
 [18]: https://twitter.com/FMMT666/status/967551405644025857
 [19]: https://www.pygame.org/wiki/Compilation
 [20]: https://github.com/FMMT666/launchpad.py/issues/38#issuecomment-519698406
+[51]: https://github.com/4gra/launchpad.py
+[52]: https://github.com/PySimpleGUI/PySimpleGUI
+[53]: https://python-mpd2.readthedocs.io/en/latest/
