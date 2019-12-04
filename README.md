@@ -6,7 +6,7 @@ A [Novation Launchpad][1] control suite for [Python][2].
 [4gra fork][51] README
 ================
 
-This fork adds a few features for my own user, but those who happen across this fork should probably go to the source unless they particularly want...
+This fork adds a few features for my own use, but those who happen across this fork should probably go to the source unless they particularly want...
 
    * Some new features:
       - `LaunchpadPlease`, a `with`-supporting class loader for Launchpad code
