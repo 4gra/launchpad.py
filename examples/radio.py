@@ -12,6 +12,16 @@ conditions; view the included file LICENCE for details.
 from launchpad_py.utils import *
 import mpd
 from time import sleep
+try:
+    from pclk_mn10 import stub as pclk
+except ImportError:
+    print("pclk-mn10 not found, but that's OK")
+    class pclk:
+        def setup_pipes():
+            pass
+        def run(args):
+            pass
+
 
 stations = {
     0:  'BBC_Radio_1',
@@ -48,11 +58,13 @@ class Radio:
         while self.patience:
             try:
                 if station:
+                    pclk.run(['on','TAPE'])
                     self.client.clear()
                     self.client.load(station)
                     self.client.play()
                 else:
                     self.client.stop()
+                    pclk.run(['off'])
                 self.patience = 100
                 return
             except mpd.base.ConnectionError:
@@ -124,6 +136,7 @@ class Palette(dict):
 
 def game_loop():
     with LaunchpadPlease(reset_on_close=True) as lp:
+        pclk.setup_pipes()
         palette = Palette(lp)
         radio = Radio()
         timer = Timer(lp)
@@ -152,3 +165,4 @@ def game_loop():
 
 if __name__ == '__main__':
     game_loop()
+    pclk.run(['off'])
