@@ -1,7 +1,7 @@
 launchpad.py
 ============
 
-A [Novation Launchpad][1] control suite for [Python][2].
+A [Novation Launchpad][1] (and [Midi Fighter][25]) control suite for [Python][2].
 
 [4gra fork][51] README
 ================
@@ -42,27 +42,55 @@ Older Launchpads might be documented [here][10].
 
 Did we mention [Python 3][18] yet?
 
+First [Mk3][21] and [X][22] Launchpad code snippets running now (4/2020).
+
+Now with full [Midi Fighter 64][23] support (8/2020).
+
+Finally! Hehe, say hello to the [Mk3 Pro][24] (8/2020)  
 
 ---
-## STATUS 2019/09/xx:
-
-What's hot, what's not?  
+## STATUS 2021/01/xx:
 
 ### Devices
 
-    Launchpad Mk1     - class "Launchpad()"       LEDs and buttons
-    Launchpad/S       - class "Launchpad()"       LEDs and buttons
-    Launchpad Mini    - class "Launchpad()"       LEDs and buttons
+    Launchpad Mk1      - class "Launchpad()"        LEDs and buttons
+    Launchpad/S        - class "Launchpad()"        LEDs and buttons
+    Launchpad Mini     - class "Launchpad()"        LEDs and buttons
 
-    Launchpad Mk2     - class "LaunchpadMk2()"    LEDs and buttons
+    Launchpad Mk2      - class "LaunchpadMk2()"     LEDs and buttons
 
-    Launchpad Pro     - class "LaunchpadPro()"    LEDs and buttons (digitally only (yet))
+    Launchpad Pro      - class "LaunchpadPro()"     LEDs and buttons (digitally only (yet))
+
+    Launchpad Pro Mk3  - class "LaunchpadProMk3()"  EXPERIMENTAL+++ as in "should be really ok"
+
+    Launchpad Mini Mk3 - class "LaunchpadMiniMk3()" LEDs and buttons  *** RENAMED 5/2020 ***
+
+    Launchpad X        - class "LaunchpadLPX()"     EXPERIMENTAL+++ as in "should work really well"
+
+    Launch Control     - class "LaunchControl()"    EXPERIMENTAL
+
+    Launch Control XL  - class "LaunchControlXL()"  LEDs, buttons and potentiometers
     
-    Launch Control XL - class "LaunchControlXL()" LEDs, buttons and potentiometers
+    LaunchKey (Mini)   - class "LaunchKeyMini()"    Buttons, keys and potentiometers/sliders, no LEDs
     
-    LaunchKey (Mini)  - class "LaunchKeyMini()"   Buttons, keys and potentiometers (sliders for big KBs), no LEDs
-    
-    Dicer             - class "Dicer()"           LEDs and buttons
+    Dicer              - class "Dicer()"            LEDs and buttons
+
+    Midi Fighter 64    - class "MidiFighter64"      LEDs and buttons
+
+
+> PRO MK3 USERS:  
+> You need to disable the Launchpad's "Transmit Clock" in the MIDI settings!  
+> See section "For Launchpad Pro Mk3 users"  
+>  
+> The Pro Mk3 needs the latest Firmware to operate flawlessly. FW is only available  
+> via a Novation account- and product registration.
+
+Please notice that the class "LaunchpadMk3()" was renamed to "LaunchpadMiniMk3()" in 5/2020.  
+This was necessary to avoid confusion with the device search string and the new "Pro-Mk3" Launchpad.  
+The "Pro Mk3" now is in LaunchpadProMk3().
+
+Please notice the changes in methods "Open()" and "Check()" for the Mini Mk3 and X.  
+Also, see demo files "hello.py" or "launchpad_rgb.py" as a reference on how to use them.
 
 
 ### Python
@@ -78,6 +106,82 @@ Successfully tested with Ubuntu 18.04-LTS+. Requires compiling your own PyGame t
 
 ---
 ## NEWS
+
+### CHANGES 2021/01/XX:
+    - fix for Python 3.9
+    - updated documentation for raw LED and button codes (top row had wrong values)
+    - changed version and tag to v0.9.1
+    - uploaded v0.9.1 to PyPI
+
+### CHANGES 2020/12/XX:
+    - changed version and tag to v0.9.0
+    - uploaded v0.9.0 to PyPI (finally :)
+
+### CHANGES 2020/09/XX:
+    - fixed sending command to not ready Pro Mk3 
+    - fixed MF64 LedCtrlString() to correctly work with the background color
+    - updated hello.py demo file for Midi Fighter 64
+    - updated demo files to new and recommended default device search strategy
+    - added Pro Mk3 ButtonStateXY() pressure events
+    - added demo file "launchpad_pressure_xy()" for new XY pressure events (Pro Mk3, so far)
+    - fixed MF64 minor init flaw
+    - added X ButtonStateXY() pressure events
+    - updated pressure xy demo file for X and also fixed an error for the Pro Mk3
+    - added Pro ButtonStateXY() pressure events
+    - updated pressure xy demo file for the Pro
+
+
+### CHANGES 2020/08/XX:
+    - added support for pressure events via ButtonStateRaw() for the Pro and Pro Mk3
+    - added support for pressure events via ButtonStateRaw() for the X
+    - added demo file "launchpad_pressure.py" for pressure sensitivity
+    - updated pressure demo to work with the X too
+    - added multiple search names for the X
+    - updated all rgb-demos to work with the X
+    - changed ListAll() method to optionally accept a string to query specific devices only
+    - added a general midi_events.py demo file for better debugging
+    - added a class for the Midi Fighter 64, only (raw) buttons so far
+    - added MF64 LedCtrlRaw(), ButtonStateXY(), LedAllOn()
+    - added MF64 LedCtrlXY()
+    - added support for the Launchpad Pro Mk3
+    - updated some demos to work with the Pro Mk3
+    - updated even some demos to work with the Pro Mk3
+    - updated yet some more demos and eliminated some bug
+    - updated pressure event handling in the Pro, Pro Mk3 and X's ButtonStateXY() methods
+    - added a Pro Mk3 "reset to Live mode" demo file
+    - updated ButtonStateXY() for the Pro Mk3, incl "classic" and "Pro" mode
+    - added character and string scrolling for Midi Fighter 64
+    - added stupid Midi Fighter text scrolling demo
+    - added MF64 LED-mode settings: brightness, toggling, flashing and animation settings
+    - updated MF64 LedCtrlRaw() to accept LED-mode settings
+    - updated MF64 LedAllOn() to optionally accept LED-mode settings
+    - updated MF64 LedCtrlXY() to optionally accept LED-mode settings
+    - added MF64 "constants" for easier LED-mode settings
+    - added MF64 LED-mode example file "midifighter_led_modes.py"
+
+
+### CHANGES 2020/05/XX:
+
+    - changed class name for the Mini MK3 to LaunchpadMiniMk3(); for compatibility w/ Pro-Mk3
+    - changed default search string for the Mini-Mk3 to "MiniMK3", for compatibility with Pro-Mk3
+    - changed default search string for the original Pro to "Launchpad Pro"; for compatibility w/ Pro-Mk3
+    - updated all included example files to match the class name and search term changes
+
+### CHANGES 2020/04/XX:
+
+    - added Mk3 Launchpad pull request #48; most of the Mk3 functionality available
+    - updated example launchpad_rgb.py (was "...mk2.py") for Mk2, Mk3 and Pro
+    - added "information.py" example to output some system and devices infos
+    - updated the "fire demo" to work with Mk2 and Mk3 too
+    - updated the "pulse demo" to work with Mk2 and Mk3 too
+    - added a class for the original Launch Control
+    - added Launchpad X pull request #51; most of the X functionality available
+
+### CHANGES 2020/03/XX:
+
+    - added Mk3 Launchpad; just a few lines of code, so far; ** EXPERIMENTAL **
+    - added LPX Launchpad; just a few lines of code, so far; ** EXPERIMENTAL **
+    - updated "hello.py" demo with basic Mk3/LPX code
 
 ### CHANGES 2019/09/XX:
 
@@ -240,9 +344,14 @@ Successfully tested with Ubuntu 18.04-LTS+. Requires compiling your own PyGame t
 ---
 ## Upcoming attractions, notes and thoughts
 
-  - "All": either remove or add the (non-) optional \<colorcode\> argument to all methods
+  - "PK3": the Pro Mk3 has some issues; needs to be fixed
+  - "All": optionally avoid resetting the X and Pro Mk3 to Live mode in Close(); (bc LEDs turn on)
+  - "FNT": fix character set; e.g. "!", "0", "N" and probably many more
   - "All": RGB to color code approximation (for flash/pulse and color code methods)
+  - "All": either remove or add the (non-) optional \<colorcode\> argument to all methods
   - "DCR": query mode
+  - "All": native scrolling for RGB pads
+  - "All": split the doc in smaller, readable parts
   - "CXL": x/y support (if it makes sense...)
   - "All": LedCtrlChar() make y-offset work
   - "Pro": change ButtonStateXY() to return True/False + velocity, as in the LaunchKeyMini
@@ -259,6 +368,9 @@ Successfully tested with Ubuntu 18.04-LTS+. Requires compiling your own PyGame t
   - "All": [r,g,b] lists for colors, instead of single args (might affect compatibility)
   - ...
 
+## cancelled:
+
+  - "M64": RGB to color code mapping *NOPE* This does not work.
 
 ---
 ## Installation/Usage
@@ -314,8 +426,16 @@ Load and use the module with
       lp = launchpad_py.Launchpad()
       # Mk2 Launchpad:
       lp = launchpad_py.LaunchpadMk2()
+      # Mk3 Launchpad:
+      lp = launchpad_py.LaunchpadMk2()
+      #  X  Launchpad:
+      lp = launchpad_py.LaunchpadLPX()
       # Pro Launchpad:
       lp = launchpad_py.LaunchpadPro()
+      # Pro Mk3 Launchpad:
+      lp = launchpad_py.LaunchpadProMk3()
+      # Control:
+      lp = launchpad_py.LaunchControl()
       # Control XL:
       lp = launchpad_py.LaunchControlXL()
       # LaunchKey Mini:
@@ -330,7 +450,11 @@ or if you dislike typing that much, use
       ...
       lp = lppy.Launchpad()
       lp = lppy.LaunchpadMk2()
+      lp = lppy.LaunchpadMiniMk3()
+      lp = lppy.LaunchpadLPX()
       lp = lppy.LaunchpadPro()
+      lp = lppy.LaunchpadProMk3()
+      lp = lppy.LaunchControl()
       lp = lppy.LaunchControlXL()
       lp = lppy.LaunchKeyMini()
       lp = lppy.Dicer()
@@ -448,7 +572,7 @@ The licensor cannot revoke these freedoms as long as you follow the license term
 ## Requirements
 
   - [Python][2] 2, 3
-  - [Pygame][3] v1.9.1, (v1.9.2), v1.9.3, v1.9.4-XX
+  - [Pygame][3] v1.9.1, (v1.9.2), v1.9.3, v1.9.4-XX, ...
 
 Some Pygame versions do not work on some OSes (e.g. v1.9.2 might cause trouble
 with Windows 7/10). I cannot tell you any more than just "try!".  
@@ -494,13 +618,18 @@ Supported and tested red/green LED Launchpad devices, here referred  to as "Clas
 Supported and tested full RGB Launchpad devices:
   
   - Launchpad Pro
+  - Launchpad Pro Mk3
   - Launchpad Mk2
+  - Launchpad Mini Mk3
+  - Launchpad LPX
 
 Supported completely different stuff:
 
+  - Launch Control
   - Launch Control XL
   - LaunchKey (Mini)
   - Dicer
+  - Midi Fighter 64
 
 Notice that Novation now (1/2016) sells an RGB Launchpad under the same
 name it once shipped the first red/green LED with!
@@ -660,11 +789,42 @@ name it once shipped the first red/green LED with!
       As of 2016/01/24, the "Pro" is now automatically set to "Ableton Live mode",
       which is required for launchpad.py to work.
 
+### For Launchpad Pro Mk3 users
+
+      USE CLASS "LaunchpadProMk3":
+      
+        lp = launchpad.LaunchpadProMk3()
+        
+      You need to disable the "Transmit Clock" in the Launchpad settings!
+      Hold "Setup" and disable the 2nd LED from the left (must be red).
+
+![RGB color palette](/images/promk3_transmit.png)
+
+      Otherwise the receive buffer will be spammed with messages.
+
 ### For Launchpad Mk2 users
 
       USE CLASS "LaunchpadMk2":
       
         lp = launchpad.LaunchpadMk2()
+
+### For Launchpad Mini Mk3 users
+
+      USE CLASS "LaunchpadMiniMk3":
+      
+        lp = launchpad.LaunchpadMiniMk3()
+
+### For Launchpad X users
+
+      USE CLASS "LaunchpadLPX":
+      
+        lp = launchpad.LaunchpadLPX()
+
+### For Launch Control users
+
+      USE CLASS "LaunchControl":
+      
+        lp = launchpad.LaunchControl()
 
 ### For Launch Control XL users
 
@@ -696,6 +856,19 @@ pushing a number button.
 
 So, if the "cue" page is active and you try to activate an LED in the "loop" page, that
 will not be visible until you activate that page.
+
+
+### For Midi Fighter 64 users
+
+      USE CLASS "MidiFighter64":
+      
+        lp = launchpad.MidiFighter64()
+
+The Midi Fighter needs to be set to MIDI channel 3 (factory default).
+It does not matter which bank is selected, both are supported.
+
+Switching the banks does currently make no difference in button numbers or events.
+Drop me a note if it would make sense to change that ...
 
 
 ### alsa.conf issues
@@ -885,12 +1058,12 @@ Btw, the fireworks demo will play whenever the Launchpad cannot be enumerated (c
     Reset()
     ButtonFlush()
     
-    (*1*) Control XL only
+    (*1*) Control (XL) only
     
 
 ### Utility functions
 
-    ListAll()
+    ListAll( [searchString] )
     EventRaw()
     
     
@@ -918,7 +1091,10 @@ Btw, the fireworks demo will play whenever the Launchpad cannot be enumerated (c
 
 
 ---
-## Launchpad "Mk2" and "Pro" class methods overview (valid for RGB LED devices)
+## Launchpad "Mk2/3", "Pro", "Pro Mk3" and "X" class methods overview (valid for RGB LED devices)
+
+Please notice that some devices do not yet have all of these or are implemented slightly different.  
+Refer to the "detailed description of ..." section for each device.
 
 ### LED functions
 
@@ -941,8 +1117,8 @@ Btw, the fireworks demo will play whenever the Launchpad cannot be enumerated (c
 
 ### Button functions
 
-    ButtonStateRaw()
-    ButtonStateXY()
+    ButtonStateRaw( [returnPressure] )
+    ButtonStateXY( [mode], [returnPressure] )
     ButtonFlush()
 
 
@@ -959,7 +1135,7 @@ Functions requiring a color code have a "...ByCode" naming style.
 
 
 ---
-## Launch Control XL class methods overview
+## Launch Control or Control XL class methods overview
 
 *WORK IN PROGESS*
 
@@ -1017,6 +1193,35 @@ Functions requiring a color code have a "...ByCode" naming style.
     ButtonStateRaw()
 
 
+---
+## Midi Fighter 64 class methods overview
+
+*WORK IN PROGESS*
+
+### LED functions
+
+    LedCtrlRaw( number, color, [mode] )
+    LedCtrlRawMode( number, mode )
+    LedCtrlXY( x, y, color )
+    LedAllOn( [color] )
+    LedCtrlChar( char, color, [offsx], [offsy], [coloroff] )
+    LedCtrlString( string, color, [coloroff], [direction], [waitms] )
+
+
+### Button functions
+
+    ButtonStateRaw()
+    ButtonStateXY()
+
+
+### Color codes
+
+The Midi Fighter 64 only supports a color table.  
+There is no possibility to control the RGB LEDs individually.
+
+![RGB color palette](/images/mf64_colorcodes.png)
+
+
 
 ---
 ## Detailed description of common Launchpad methods
@@ -1024,7 +1229,13 @@ Functions requiring a color code have a "...ByCode" naming style.
 ### Open( [number], [name], [template (1)] )
 
     Opens the a Launchpad and initializes it.  
-    Please notice that some devices have up to six MIDI entries!.
+    Please notice that some devices have multiple and even up to six MIDI entries!
+
+    To open the first Mini Mk3 or X device, "number" needs to be set to "1", not "0",
+    as valid for (most) of the other Launchpads.
+    
+    Some Launchpads, e.g. the "Mk3 Pro" come with 3 MIDI devices. While the first device's
+    number is "0", the 2nd device will require opening number "3" and not "1".
     
     (1) Notice that <template> is only valid for the Launch Control XL pad.
     A number of 1..8 selects and activates a user template (1 by default)
@@ -1056,26 +1267,34 @@ Functions requiring a color code have a "...ByCode" naming style.
                          Defaults to 0, the 1st device, if not given.
               <name>     OPTIONAL, only consider devices whose names contain
                          the string <name>. The default names for the classes are:
-                           Launchpad()       -> "Launchpad"
-                           LaunchpadMk2()    -> "Mk2"
-                           LaunchpadPro()    -> "Pro"
-                           LaunchControlXL() -> "Control XL"
-                           LaunchKeyMini()   -> "Launchkey" (should work for all variants)
+                           Launchpad()        -> "Launchpad"
+                           LaunchpadMk2()     -> "Mk2"
+                           LaunchpadMiniMk3() -> "MiniMk3"
+                           LaunchpadLPX()     -> "LPX" and "Launchpad X"
+                           LaunchpadPro()     -> "Launchpad Pro"
+                           LaunchpadProMk3()  -> "Launchpad Pro Mk3"
+                           LaunchControl()    -> "Control MIDI"
+                           LaunchControlXL()  -> "Control XL"
+                           LaunchKeyMini()    -> "Launchkey" (should work for all variants)
                          It is sufficient to search for a part of the string, e.g.
                          "chpad S" will find a device named "Launchpad S" or even
                          "Novation Launchpad S"
-              <template> OPTIONAL, ONLY CONTROL XL
+              <template> OPTIONAL, ONLY FOR LAUNCH CONTROL (XL)
                          The Launch Control XL supports eight user and eight factory settings,
                          selectable via the two "Template" burrons on the top right.
                          By default, Launchpad.py uses the template "User 1".
+                         Simply don't touch this and you're safe.
+                         Notice that these values are internally remapped to 0..15, as they
+                         appear in the Novation documentation. The buttons on the HW are labeled "1..8",
+                         that is why Launchpad.py uses 1..16 rather than 0..15.
                          1.. 8 -> select user template    1..8
                          9..16 -> select factory template 1..8
 
       RETURN: True     success
               False    error
 
-	As of 12/2016, the name search patterns are case insensitive, hence strings like "mk2", "pRo"
-	or even "lAunCHpAd MiNI" are valid too.
+  As of 12/2016, the name search patterns are case insensitive, hence strings like "mk2", "pRo"
+  or even "lAunCHpAd MiNI" are valid too.
 
     Notice that the default name for the class Launchpad(), the "Mk1" or "Classic" Launchpads,
     will also react to an attached "Pro" or "Mk2" model. In that case, it's required to either
@@ -1096,12 +1315,28 @@ Functions requiring a color code have a "...ByCode" naming style.
               lp.Open( name = "Launchpad Mini", number = 0)
               
               # open the 1st "Mk2"
-              lp = launchpad.LaunchpadMk2()    # notice the "Mk2" class!
-              lp.Open()                        # equals Open( 0, "Mk2" )
-              
+              lp = launchpad.LaunchpadMk2()     # notice the "Mk2" class!
+              lp.Open()                         # equals Open( 0, "Mk2" )
+
+              # open the 1st "Mk3"
+              #   NOTICE: Mk3 has two MIDI instances and we need the 2nd one.
+              #   So, to open the first attached devices, use "Open(1)" and not "Open(0)". 
+              lp = launchpad.LaunchpadMiniMk3() # notice the "MiniMk3" class!
+              lp.Open()                         # THIS WILL NOT WORK!
+              lp.Open(1)                        # this will open the first device
+              lp.Open(3)                        # this would open the 2nd attached Launchpad
+
+              # open the 1st "X"
+              #   NOTICE: The X has two MIDI instances and we need the 2nd one.
+              #   So, to open the first attached devices, use "Open(1)" and not "Open(0)". 
+              lp = launchpad.LaunchpadLPX()     # notice the "LPX" class!
+              lp.Open()                         # THIS WILL NOT WORK!
+              lp.Open(1)                        # this will open the first device
+              lp.Open(3)                        # this would open the 2nd attached Launchpad
+
               # open the 1st "Pro"
-              lp = launchpad.LaunchpadPro()    # notice the "Pro" class!
-              lp.Open()                        # equals Open( 0, "Pro" )
+              lp = launchpad.LaunchpadPro()     # notice the "Pro" class!
+              lp.Open()                         # equals Open( 0, "Launchpad Pro" )
               
               # open the 1st "XL" with user template 3
               lp = launchpad.LaunchControlXL( template = 3 )
@@ -1122,17 +1357,30 @@ Functions requiring a color code have a "...ByCode" naming style.
     Like Open(), this method uses different default names for the different classes:
       Launchpad()        -> "Launchpad"
       LaunchpadMk2()     -> "Mk2"
-      LaunchpadPro()     -> "Pro"
+      LaunchpadMiniMk3() -> "MiniMk3"
+      LaunchpadLPX()     -> "LPX" and "Launchpad X"
+      LaunchpadPro()     -> "Launchpad Pro"
+      LaunchpadProMk3()  -> "ProMk3"
+      LaunchControl()    -> "Control MIDI"
       LaunchControlXL()  -> "Control XL"
       LaunchKeyMini()    -> "Launchkey"
+
+    Notice that the first Mk3 and the first X Launchpads need to be checked with "1", not "0".
       
     Notice that it's absolutely safe to query for an "Pro" or "Mk2" from all classes, e.g.:
     
-      lp = lauchpad.Launchpad()        # Launchpad "Mk1" or "Classic" class
-      if lp.Check( 0, "Pro" ):         # check for "Pro"
-        lp = launchpad.LaunchpadPro()  # "reload" the new class for the "Pro"
-        lp.Open()                      # equals lp.Open( 0, "Pro" )
-    
+      lp = lauchpad.Launchpad()             # Launchpad "Mk1" or "Classic" class
+      if lp.Check( 0, "Pro" ):              # check for "Pro"
+        lp = launchpad.LaunchpadPro()       # "reload" the new class for the "Pro"
+        lp.Open()                           # equals lp.Open( 0, "Launchpad Pro" )
+
+    As of 8/2020, the recommended way is to simply omit the name and trust the
+    internal name search, though the above "name search variant" might be helpful in a pinch.
+
+      if launchpad.LaunchpadPro.Check( 0 ): # check for "Pro"
+        lp = launchpad.LaunchpadPro()       # "reload" the new class for the "Pro"
+        lp.Open( 0 )                        # equals lp.Open( 0, "Launchpad Pro" )
+
     Search patterns are case insensitive.  
     
       PARAMS: see Open()
@@ -1143,7 +1391,8 @@ Functions requiring a color code have a "...ByCode" naming style.
 
 ### Close()
 
-    Bug in PyGame. Don't call it (yet)...
+    No effect for most devices, except for the "Pro Mk3" and "X".
+    Resets these Launchpads to Live mode.
 
       PARAMS:
       RETURN:
@@ -1160,13 +1409,15 @@ Functions requiring a color code have a "...ByCode" naming style.
       RETURN:
 
 
-### ListAll()
+### ListAll( searchString = '' )
 
     Debug function.
-    Can be called any time and does not even require Open().
     Prints a list of all detected MIDI devices and addresses.
+    Can be called any time and does not even require an opened device.
+    The optional <searchString> parameter can be used to return a filtered set of
+    device names only. By default, it is set to an empty string, which simply prints everything.
 
-      PARAMS:
+      PARAMS: <searchString>     [OPTIONAL] only devices containing this string will be considered
       RETURN:
 
 
@@ -1368,9 +1619,11 @@ Functions requiring a color code have a "...ByCode" naming style.
 
 
 ---
-## Detailed description of Launchpad "Pro" or "Mk2" only methods
+## Detailed description of RGB Launchpad only methods
 
-### LedSetMode( mode ) *>>> PRO ONLY <<<*
+ Applies to "Pro", "Pro Mk3", "Mk2", "Mini Mk3" and "LPX" unless otherwise noted.
+
+### LedSetMode( mode ) *>>> PRO, MK3, LPX ONLY <<<*
 
     Sets the Launchpad's mode.
     For proper operation with launchpad.py, the "Pro" must be set to "Ableton Live" mode.
@@ -1417,6 +1670,11 @@ Functions requiring a color code have a "...ByCode" naming style.
     
     Notice that the "Pro" and "Mk2" have different LED number layouts.
     Please see tables, somewhere below.
+
+    Notice that even though the Mk3 and the X support 0..127 intensities,
+    only 0..63 can be used here. The values will be scaled up, resulting in the
+    same intensity.
+    Technically speaking, 0..63 is shifted left to match 0..127 with the LSB being omitted.
 
       PARAMS: <number>    number of the LED to control
               <red>       a number from 0..63
@@ -1579,7 +1837,12 @@ Functions requiring a color code have a "...ByCode" naming style.
     This method uses system-exclusive MIDI messages, which require 10 bytes to
     be sent for each message. For a faster version, hence less comfortable version,
     see LedCtrlXYByCode() below.
-    
+
+    Notice that even though the Mk3 and the X support 0..127 intensities,
+    only 0..63 can be used here. The values will be scaled up, resulting in the
+    same intensity.
+    Technically speaking, 0..63 is shifted left to match 0..127 with the LSB being omitted.
+
       PARAMS: <x>      x coordinate of the LED to control
               <y>      y coordinate of the LED to control
               <red>    red   LED intensity 0..63 (or 0..3 in "Mk1" mode)
@@ -1640,6 +1903,11 @@ Functions requiring a color code have a "...ByCode" naming style.
     adapt the old 0..3 range to the new 0..63 one of the "Pro" mode.
     That way, it is compatible to old, existing "Mk1" code.
 
+    Notice that even though the Mk3 and the X support 0..127 intensities,
+    only 0..63 can be used here. The values will be scaled up, resulting in the
+    same intensity.
+    Technically speaking, 0..63 is shifted left to match 0..127 with the LSB being omitted.
+
       PARAMS: <char>   one field string to display; e.g.: 'A'
               <red>    red   LED intensity 0..63 (or 0..3 in "Mk1" mode)
               <green>  green LED intensity 0..63 (or 0..3 in "Mk1" mode)
@@ -1680,6 +1948,10 @@ Functions requiring a color code have a "...ByCode" naming style.
     
       lp.LedCtrlString( "Hello", 3,1, direction = -1, waitms = 100 )
 
+    Notice that even though the Mk3 and the X support 0..127 intensities,
+    only 0..63 can be used here. The values will be scaled up, resulting in the
+    same intensity.
+    Technically speaking, 0..63 is shifted left to match 0..127 with the LSB being omitted.
 
       PARAMS: <string>     a string to display; e.g.: 'Hello'
               <red>        red   LED intensity 0..63 (or 0..3 in "Mk1" mode)
@@ -1701,41 +1973,83 @@ Functions requiring a color code have a "...ByCode" naming style.
       RETURN:
 
 
-### ButtonStateRaw()
+### ButtonStateRaw( [returnPressure] )
 
-    Returns the state of the buttons in RAW mode.
+    Returns the state of the buttons and pressure events in RAW mode.
     
     Notice that this is not directly compatible with the "Mk1" ButtonStateRaw()
     method, which returns [ <button>, <True/False> ].
+
+    Only the Pro, X and Pro Mk3 support pressure events.
+    They can be enables by passing "returnPressure=True" to the method call.
+    Notice that the Pro and X behave differently:
+
+    Pro and Pro Mk3:
+      There is only one pressure value for all buttons together. If multiple buttons
+      are pressed, the biggest value is returned. There is no possibility to determine
+      which button caused it. To distinguish the pressure events from button events,
+      a fake <button> number of "255" is returned in the list: [ 255, <value>].
+
+    X:
+      The X supports multiple pressure values. For a distinction between button events
+      and pressure events, "255" is added to the button number:
+       [ 255 + <button>, <pressure> ]
 
       PARAMS:
       RETURN: [ ]                    An empty list if no event occured, otherwise...
-              [ <button>, <value> ]  ... a list with two fields:
-              <button> is the button number, the second field, <value> determines
-              the intensity (0..127) with which the button was pressed.
-              0 means that the button was released.
+              [ <button>, <value> ]            ... a list with two fields:
+                <button> is the button number (0..127), the second field, <value> determines
+                the intensity (0..127) with which the button was pressed.
+                0 means that the button was released.
+              [ 255, <value> ]                 ... PRO: a list of pressure events with two fields:
+                "255" as an indicator for a pressure event and <value> for the the intensity
+                of the pressure (0..127).
+              [ 255 + <button>, <value> ]      ... LPX: a list of pressure events with two fields:
+                "255" + the button numbericator for a pressure event and <value> for the intensity
+                of the pressure (0..127).
 
 
-### ButtonStateXY( [mode] )
+### ButtonStateXY( [mode], [returnPressure] )
 
-    Returns the state of the buttons in X/Y mode.
+    Returns the state of the buttons in X/Y mode and optionally the pressure value.
     
     Notice that this is not directly compatible with the "Mk1" ButtonStateRaw()
     method, which returns [ <button>, <True/False> ].
+
+    Only the Pro, X and Pro Mk3 support pressure events.
+    They can be enables by passing "returnPressure=True" to the method call.
+    Notice that the Pro and X behave differently:
+
+    Pro and Pro Mk3:
+      There is only one pressure value for all buttons together. If multiple buttons
+      are pressed, the biggest value is returned. There is no possibility to determine
+      which button caused it. To distinguish the pressure events from button events,
+      fake coordinates of "255" are returned in the list: [ 255, 255, <value>].
+
+    X:
+      The X supports multiple pressure values. For a distinction between button events
+      and pressure events, "255" is added to the coordinate:
+       [ <x> + 255, <y> + 255, <value> ]
 
       PARAMS: <mode>       OPTIONAL: "pro" selects new x/y origin >>> PRO ONLY <<<
       RETURN: [ ]                    An empty list if no event occured, otherwise...
               [ <x>, <y>, <value> ]  ... a list with three fields:
-              <x> and <y> are the button's coordinates. The third field, <value> determines
-              the intensity (0..127) with which the button was pressed.
-              0 means that the button was released.
-              Notice that "Mk2" Pads will only return either 0 or 127.
-              They don't have the full analog mode like the "Pro" has.
+                <x> and <y> are the button's coordinates. The third field, <value> determines
+                the intensity (0..127) with which the button was pressed.
+                0 means that the button was released.
+                Notice that "Mk2" Pads will only return either 0 or 127.
+                They don't have the full analog mode like the "Pro" has.
+              [ 255, 255, <value> ]             ... PRO: a list of pressure events with two fields:
+                "255" as an indicator for a pressure event and <value> for the the intensity
+                of the pressure (0..127).
+              [ <x> + 255, <y> + 255, <value> ] ... LPX: a list of pressure events with two fields:
+                "255" added to the <x> and <y> coordinates for a pressure event and <value> for the intensity
+                of the pressure (0..127).
 
 
 
 ---
-## Detailed description of Launch Control XL specific methods
+## Detailed description of Launch Control and Control XL specific methods
 
 *WORK IN PROGRESS*
 
@@ -1743,6 +2057,8 @@ Functions requiring a color code have a "...ByCode" naming style.
 ### TemplateSet( template )
 
     Activates one of the user or factory templates, as specified by <template>.
+    Don't touch this, unless you know what you are doing. Settings other values
+    than "1", the default, might have an impact on other functionality like LedAllOn().
     
       PARAMS: 1.. 8    activate user template    1..8
               9..16    activate factory template 1..8
@@ -1753,7 +2069,7 @@ Functions requiring a color code have a "...ByCode" naming style.
 ### Reset()
 
     Resets the Launchpad and (quickly) turns off all LEDs.
-    Notice that only the Mk1 performs a 
+    Only resets the currently active template.
 
       PARAMS:
       RETURN:
@@ -2036,6 +2352,224 @@ Functions requiring a color code have a "...ByCode" naming style.
       RETURN:
 
 
+
+---
+## Detailed description of Midi Fighter specific methods
+
+### Constants
+
+#### LED Modes
+
+    The following constants can be used instead of using integer values for the LED modes.
+
+        MODE_BRIGHT[0..15]  instead of  18..33  for brightness
+        MODE_TOGGLE[0..7]   instead of  34..41  for toggling
+        MODE_PULSE[0..7]    instead of  42..49  for pulsing
+        MODE_ANIM_SQUARE    instead of  50
+        MODE_ANIM_CIRCLE    instead of  51
+        MODE_ANIM_STAR      instead of  52
+        MODE_ANIM_TRIANGLE  instead of  53
+
+    Some examples:
+      lp.LedAllOn( 5, 18 )  becomes lp.LedAllOn( 5, lp.MODE_BRIGHT[0] );  LED RED BUT OFF
+      lp.LedAllOn( 5, 33 )  becomes lp.LedAllOn( 5, lp.MODE_BRIGHT[15] ); LED RED FULLY ON
+      lp.LedAllOn( 5, 33 )  becomes lp.LedAllOn( 5, lp.MODE_BRIGHT[15] ); LED RED FULLY ON
+
+    Accessing "out of bounds" list values will of course crash your app.
+
+
+### ButtonStateRaw()
+
+    Returns the state of the buttons in RAW mode.
+    See table with button and LED numbers at the end of this document.
+
+      PARAMS:
+      RETURN: [ ]                        An empty list if no event occured, otherwise...
+              [ <button>, <value> ]      ... a list with two fields:
+                                         <button> is the RAW button number
+                                         <value>  >0 = pressed; 0 = released
+
+
+### ButtonStateXY()
+
+    Returns the state of the buttons in X/Y mode.
+    See table with coordinates at the end of this document.
+
+      PARAMS:
+      RETURN: [ ]                        An empty list if no event occured, otherwise...
+              [ <x> , <y>, <value> ]     ... a list with three fields:
+                                         <x>      0..7; x coordinate of button
+                                         <y>      0..7; y coordinate of button
+                                         <value>  >0 = pressed; 0 = released
+
+
+### LedCtrlRaw( led, colorcode, [mode] )
+
+    Controls an LED via its number <button> and <colorcode>.
+    See table with button number at the end of this document.
+    Color codes are somewhere above (see image).
+    The optional <mode> parameter selects the brightness, toggling, flashing
+    or animation setting of the LED.
+    This also needs to be used to turn an LED comnpletely off.
+
+      Values for mode:
+        18..33: set brightness of the LED (0..15)
+        34..41: set toggling speed from every 16 beats down to 1/8 beat
+        42..49: set pulsing  speed from every 32 beats down to 1/8 beat (*)
+        50:     animation set to square
+        51:     animation set to circle
+        52:     animation set to star
+        53:     animation set to triangle
+
+        (*) This might be an error in the manual, as it does not contain an 1/4 setting
+            and starts at 1/32. Need to check ...
+
+      As an alternative and instead of using the numbers above, these constants can be used.
+      E.g. "LedAllOn( 5, lp.MODE_BRIGHT[5] )" for an intensity value of 5, from 0..15
+
+        MODE_BRIGHT[0..15]
+        MODE_TOGGLE[0..7]
+        MODE_PULSE[0..7]
+        MODE_ANIM_SQUARE
+        MODE_ANIM_CIRCLE
+        MODE_ANIM_STAR
+        MODE_ANIM_TRIANGLE
+
+      PARAMS: <led>         36..99; number of the LED to control
+              <colorcode>   0..127; color code
+              <mode>        [OPTIONAL] 18..53, see above
+      RETURN:
+
+
+### LedCtrlRawMode( led, mode )
+
+    Controls the mode of an LED via its number <button> and <mode>.
+    See table with button number at the end of this document.
+    The <mode> parameter can be set to:
+
+        18..33: set brightness of the LED (0..15)
+        34..41: set toggling speed from every 16 beats down to 1/8 beat
+        42..49: set pulsing  speed from every 32 beats down to 1/8 beat (*)
+        50:     animation set to square
+        51:     animation set to circle
+        52:     animation set to star
+        53:     animation set to triangle
+
+        (*) This might be an error in the manual, as it does not contain an 1/4 setting
+            and starts at 1/32. Need to check ...
+
+      As an alternative and instead of using the numbers above, these constants can be used.
+      E.g. "LedAllOn( 5, lp.MODE_BRIGHT[5] )" for an intensity value of 5, from 0..15
+
+        MODE_BRIGHT[0..15]
+        MODE_TOGGLE[0..7]
+        MODE_PULSE[0..7]
+        MODE_ANIM_SQUARE
+        MODE_ANIM_CIRCLE
+        MODE_ANIM_STAR
+        MODE_ANIM_TRIANGLE
+
+      PARAMS: <led>         36..99; number of the LED to control
+              <mode>        18..53; see above
+      RETURN:
+
+
+### LedCtrlXY( x, y, colorcode )
+
+    Controls an LED via its coordinates <x>/<y> and a <colorcode>.
+    See table with coordinates at the end of this document.
+    Color codes are somewhere above (see image).
+
+      PARAMS: <x>           0..7; x coordinate
+              <y>           0..7; y coordinate
+              <colorcode>   0..127; color code
+      RETURN:
+
+
+### LedCtrlChar( char, color, [offsx = 0], [offsy = 0], [coloroff = 0] )
+
+    Displays character <char> with a color of <color> and a
+    lateral offset of <offsx> (-8..8) on the Midi Fighter.
+    <offsy> does not have yet any function.
+    The optional <coloroff> parameter specifies the background color.
+    Notice that it is not possible to set this to "black" or off as the
+    Midi Fighter doesn't support this.
+    
+    Also notice that this method is not compatible with the Launchpad "RGB-calls",
+    because the Midi Fighter also lacks RGB support. For 500 bucks. Lol :-)
+    
+      lp.LedCtrlChar( 'a', 5, offsx = xvar, coloroff = 0 )
+
+      PARAMS: <char>      one field string to display; e.g.: 'A'
+              <color>     color of the character; see table and image somewhere above
+              <offsx>     x offset of the character on the main, 8x8 matrix (-8..8)
+                          Negative is left and positive right.
+              <offsy>     no function
+              <coloroff>  color of the background; see table and image somewhere above
+      RETURN:
+
+      EXAMPLES:
+              # scroll a red 'A' from left to right
+              for x in range( -8, 9 ):
+                lp.LedCtrlChar( 'A', 3, 0, offsx = x )
+                time.wait( 100 ) # from PyGame (from pygame import time)
+
+
+### LedCtrlString( string, color, [coloroff = 0], [direction = 0], [waitms = 150] )
+
+    Scrolls <string> across the Midi Fighter's 8x8 matrix.
+    <color> specifies the color of the string and <coloroff> the background.
+    <direction> determines the direction of scrolling.
+    <waitms>, by default 150, delays the scrolling speed.
+    
+    For future compatibility, it is highly recommended to use
+    <direction> and <waitms> as a named arguments, e.g.:
+    
+      lp.LedCtrlString( "Hello", 3,1, direction = -1, waitms = 100 )
+
+      PARAMS: <string>     a string to display; e.g.: 'Hello'
+              <color>      color of the character; see color table
+              <coloroff>   color of the background; see color table
+              <direction> -1 -> scroll right to left
+                           0 -> do not scroll, just show the character
+                           1 -> scroll left to right
+              <waitms>     OPTIONAL: delay for scrolling speed, default 150
+      RETURN:
+
+
+### LedAllOn( [colorcode], [mode] )
+
+    Quickly sets all LEDs to white or an optional color of <colorcode>
+    and a mode setting of <mode>.
+    To turn the LEDs off, set their brightness to "0" via the <mode> parameter:
+
+        18..33: set brightness of the LED (0..15)
+        34..41: set toggling speed from every 16 beats down to 1/8 beat
+        42..49: set pulsing  speed from every 32 beats down to 1/8 beat (*)
+        50:     animation set to square
+        51:     animation set to circle
+        52:     animation set to star
+        53:     animation set to triangle
+
+        (*) This might be an error in the manual, as it does not contain an 1/4 setting
+            and starts at 1/32. Need to check ...
+
+      As an alternative and instead of using the numbers above, these constants can be used.
+      E.g. "LedAllOn( 5, lp.MODE_BRIGHT[5] )" for an intensity value of 5, from 0..15
+
+        MODE_BRIGHT[0..15]
+        MODE_TOGGLE[0..7]
+        MODE_PULSE[0..7]
+        MODE_ANIM_SQUARE
+        MODE_ANIM_CIRCLE
+        MODE_ANIM_STAR
+        MODE_ANIM_TRIANGLE
+
+      PARAMS: <colorcode>   0..127; color code
+      RETURN:
+
+
+
 ---
 ## Button and LED codes, Launchpad Mk1 "Classic" (red/green LEDs)
 
@@ -2123,6 +2657,60 @@ Functions requiring a color code have a "...ByCode" naming style.
     +---+---+---+---+---+---+---+---+ 
     |0/0|   |2/0|   |   |   |   |   |         0
     +---+---+---+---+---+---+---+---+ 
+     
+    +---+---+---+---+---+---+---+---+  +---+
+    |0/1|   |   |   |   |   |   |   |  |   |  1
+    +---+---+---+---+---+---+---+---+  +---+
+    |   |   |   |   |   |   |   |   |  |   |  2
+    +---+---+---+---+---+---+---+---+  +---+
+    |   |   |   |   |   |5/3|   |   |  |   |  3
+    +---+---+---+---+---+---+---+---+  +---+
+    |   |   |   |   |   |   |   |   |  |   |  4
+    +---+---+---+---+---+---+---+---+  +---+
+    |   |   |   |   |   |   |   |   |  |   |  5
+    +---+---+---+---+---+---+---+---+  +---+
+    |   |   |   |   |4/6|   |   |   |  |   |  6
+    +---+---+---+---+---+---+---+---+  +---+
+    |   |   |   |   |   |   |   |   |  |   |  7
+    +---+---+---+---+---+---+---+---+  +---+
+    |   |   |   |   |   |   |   |   |  |8/8|  8
+    +---+---+---+---+---+---+---+---+  +---+
+    
+
+---
+## Button and LED codes, Launchpad "Mk3" and "X" (RGB LEDs)
+
+### RAW mode
+
+    +---+---+---+---+---+---+---+---+  +---+
+    | 91|   |   |   | 95|   |   | 98|  | 99|
+    +---+---+---+---+---+---+---+---+  +---+
+    
+    +---+---+---+---+---+---+---+---+  +---+
+    | 81|   |   |   |   |   |   |   |  | 89|
+    +---+---+---+---+---+---+---+---+  +---+
+    | 71|   |   |   |   |   |   |   |  | 79|
+    +---+---+---+---+---+---+---+---+  +---+
+    | 61|   |   |   |   |   | 67|   |  | 69|
+    +---+---+---+---+---+---+---+---+  +---+
+    | 51|   |   |   |   |   |   |   |  | 59|
+    +---+---+---+---+---+---+---+---+  +---+
+    | 41|   |   |   |   |   |   |   |  | 49|
+    +---+---+---+---+---+---+---+---+  +---+
+    | 31|   |   |   |   |   |   |   |  | 39|
+    +---+---+---+---+---+---+---+---+  +---+
+    | 21|   | 23|   |   |   |   |   |  | 29|
+    +---+---+---+---+---+---+---+---+  +---+
+    | 11|   |   |   |   |   |   |   |  | 19|
+    +---+---+---+---+---+---+---+---+  +---+
+    
+
+### X/Y mode
+
+      0   1   2   3   4   5   6   7      8   
+    +---+---+---+---+---+---+---+---+  +---+
+    |0/0|   |2/0|   |   |   |   |   |  |2/8|  0
+    +---+---+---+---+---+---+---+---+  +---+
      
     +---+---+---+---+---+---+---+---+  +---+
     |0/1|   |   |   |   |   |   |   |  |   |  1
@@ -2233,11 +2821,145 @@ Functions requiring a color code have a "...ByCode" naming style.
            +---+---+---+---+---+---+---+---+ 
 
 
+---
+## Button and LED codes, Launchpad "Pro Mk3" (RGB LEDs)
+
+### LED and and button numbers in RAW mode
+
+    +---+  +---+---+---+---+---+---+---+---+  +---+
+    | 90|  | 91|   |   |   |   |   |   | 98|  | 99|
+    +---+  +---+---+---+---+---+---+---+---+  +---+
+            
+    +---+  +---+---+---+---+---+---+---+---+  +---+
+    | 80|  | 81|   |   |   |   |   |   |   |  | 89|
+    +---+  +---+---+---+---+---+---+---+---+  +---+
+    | 70|  |   |   |   |   |   |   |   |   |  | 79|
+    +---+  +---+---+---+---+---+---+---+---+  +---+
+    | 60|  |   |   |   |   |   |   | 67|   |  | 69|
+    +---+  +---+---+---+---+---+---+---+---+  +---+
+    | 50|  |   |   |   |   |   |   |   |   |  | 59|
+    +---+  +---+---+---+---+---+---+---+---+  +---+
+    | 40|  |   |   |   |   |   |   |   |   |  | 49|
+    +---+  +---+---+---+---+---+---+---+---+  +---+
+    | 30|  |   |   |   |   |   |   |   |   |  | 39|
+    +---+  +---+---+---+---+---+---+---+---+  +---+
+    | 20|  |   |   | 23|   |   |   |   |   |  | 29|
+    +---+  +---+---+---+---+---+---+---+---+  +---+
+    | 10|  |   |   |   |   |   |   |   |   |  | 19|
+    +---+  +---+---+---+---+---+---+---+---+  +---+
+          
+           +---+---+---+---+---+---+---+---+ 
+           |101|102|   |   |   |   |   |108|
+           +---+---+---+---+---+---+---+---+ 
+           |  1|  2|   |   |   |   |   |  8|
+           +---+---+---+---+---+---+---+---+ 
+
+
+### LED and and button numbers in X/Y (classic) mode
+
+      9      0   1   2   3   4   5   6   7      8   
+           +---+---+---+---+---+---+---+---+ 
+           |0/0|   |2/0|   |   |   |   |   |         0
+           +---+---+---+---+---+---+---+---+ 
+            
+    +---+  +---+---+---+---+---+---+---+---+  +---+
+    |   |  |0/1|   |   |   |   |   |   |   |  |   |  1
+    +---+  +---+---+---+---+---+---+---+---+  +---+
+    |9/2|  |   |   |   |   |   |   |   |   |  |   |  2
+    +---+  +---+---+---+---+---+---+---+---+  +---+
+    |   |  |   |   |   |   |   |5/3|   |   |  |   |  3
+    +---+  +---+---+---+---+---+---+---+---+  +---+
+    |   |  |   |   |   |   |   |   |   |   |  |   |  4
+    +---+  +---+---+---+---+---+---+---+---+  +---+
+    |   |  |   |   |   |   |   |   |   |   |  |   |  5
+    +---+  +---+---+---+---+---+---+---+---+  +---+
+    |   |  |   |   |   |   |4/6|   |   |   |  |   |  6
+    +---+  +---+---+---+---+---+---+---+---+  +---+
+    |   |  |   |   |   |   |   |   |   |   |  |   |  7
+    +---+  +---+---+---+---+---+---+---+---+  +---+
+    |9/8|  |   |   |   |   |   |   |   |   |  |8/8|  8
+    +---+  +---+---+---+---+---+---+---+---+  +---+
+          
+           +---+---+---+---+---+---+---+---+ 
+           |   |1/9|   |   |   |   |   |   |         9
+           +---+---+---+---+---+---+---+---+ 
+           |/10|   |   |   |   |   |   |   |        10
+           +---+---+---+---+---+---+---+---+ 
+
+### LED and and button numbers in X/Y (pro) mode
+
+      0      1   2   3   4   5   6   7   8      9
+           +---+---+---+---+---+---+---+---+ 
+           |1/0|   |3/0|   |   |   |   |   |         0
+           +---+---+---+---+---+---+---+---+ 
+            
+    +---+  +---+---+---+---+---+---+---+---+  +---+
+    |   |  |1/1|   |   |   |   |   |   |   |  |   |  1
+    +---+  +---+---+---+---+---+---+---+---+  +---+
+    |0/2|  |   |   |   |   |   |   |   |   |  |   |  2
+    +---+  +---+---+---+---+---+---+---+---+  +---+
+    |   |  |   |   |   |   |   |6/3|   |   |  |   |  3
+    +---+  +---+---+---+---+---+---+---+---+  +---+
+    |   |  |   |   |   |   |   |   |   |   |  |   |  4
+    +---+  +---+---+---+---+---+---+---+---+  +---+
+    |   |  |   |   |   |   |   |   |   |   |  |   |  5
+    +---+  +---+---+---+---+---+---+---+---+  +---+
+    |   |  |   |   |   |   |5/6|   |   |   |  |   |  6
+    +---+  +---+---+---+---+---+---+---+---+  +---+
+    |   |  |   |   |   |   |   |   |   |   |  |   |  7
+    +---+  +---+---+---+---+---+---+---+---+  +---+
+    |0/8|  |   |   |   |   |   |   |   |   |  |9/8|  8
+    +---+  +---+---+---+---+---+---+---+---+  +---+
+          
+           +---+---+---+---+---+---+---+---+ 
+           |   |2/9|   |   |   |   |   |8/9|         9
+           +---+---+---+---+---+---+---+---+ 
+           |   |   |   |   |   |   |   |/10|        10
+           +---+---+---+---+---+---+---+---+ 
+
+
+
+---
+## Buttons, LED and potentiometer codes, Launch Control
+
+Notice that the two "Templates" buttons on the top right cannot be controlled (NOP).
+
+
+### RAW mode
+
+          0   1   2   3   4   5   6   7      8    9
+         
+        +---+---+---+---+---+---+---+---+  +---++---+
+     0  | 21| 22| 23| 24| 25| 26| 27| 28|  |NOP||NOP| 
+        +---+---+---+---+---+---+---+---+  +---++---+
+     1  | 41| 42| 43| 44| 45| 46| 47| 48|  |114||115| 
+        +---+---+---+---+---+---+---+---+  +---++---+
+        +---+---+---+---+---+---+---+---+  +---++---+
+     2  |  9| 10| 11| 12| 25| 26| 27| 28|  |116||117| 
+        +---+---+---+---+---+---+---+---+  +---++---+
+
+
+
+### X/Y mode
+
+*PRELIMINARY*
+
+          0   1   2   3   4   5   6   7      8    9
+         
+        +---+---+---+---+---+---+---+---+  +---++---+
+        | - | - | - | - | - | - | - | - |  |NOP||NOP| 
+        +---+---+---+---+---+---+---+---+  +---++---+
+     1  | - | - | - | - | - | - | - | - |  |8/1||9/1| 
+        +---+---+---+---+---+---+---+---+  +---++---+
+        +---+---+---+---+---+---+---+---+  +---++---+
+     0  |0/0|   |   |   |   |   |   |7/0|  |8/0||9/0| 
+        +---+---+---+---+---+---+---+---+  +---++---+
+
 
 ---
 ## Buttons, LED and potentiometer codes, Launch Control XL
 
-Notice that the two "template" buttons on the top right cannot be controlled (NOP).
+Notice that the two "Templates" buttons on the top right cannot be controlled (NOP).
 
 
 ### RAW mode
@@ -2397,6 +3119,50 @@ The mode keys return:
      +-----+                                            +-----+
 
 
+---
+## (TODO) Led and Button codes, Midi Fighter 64
+
+### RAW Mode
+
+    +---+---+---+---+---+---+---+---+
+    | 64|   |   | 67| 96|   |   | 99|
+    +---+---+---+---+---+---+---+---+
+    | 60|   |   | 63| 92|   |   | 95|
+    +---+---+---+---+---+---+---+---+
+    | 56|   |   | 59| 88|   |   | 91|
+    +---+---+---+---+---+---+---+---+
+    | 52|   |   | 55| 84|   |   | 87|
+    +---+---+---+---+---+---+---+---+
+    | 48|   |   | 51| 80|   |   | 83|
+    +---+---+---+---+---+---+---+---+
+    | 44|   |   | 47| 76|   |   | 79|
+    +---+---+---+---+---+---+---+---+
+    | 40|   |   | 43| 72|   |   | 75|
+    +---+---+---+---+---+---+---+---+
+    | 36|   |   | 39| 68|   |   | 71|
+    +---+---+---+---+---+---+---+---+
+
+### X/Y Mode
+
+      0   1   2   3   4   5   6   7
+    +---+---+---+---+---+---+---+---+
+    |0/0|   |   |   |   |   |   |   | 0
+    +---+---+---+---+---+---+---+---+
+    |   |   |   |   |   |   |   |   | 1
+    +---+---+---+---+---+---+---+---+
+    |   |   |   |   |   |5/2|   |   | 2
+    +---+---+---+---+---+---+---+---+
+    |   |   |   |   |   |   |   |   | 3
+    +---+---+---+---+---+---+---+---+
+    |   |   |   |   |   |   |   |   | 4
+    +---+---+---+---+---+---+---+---+
+    |   |   |   |   |4/5|   |   |   | 5
+    +---+---+---+---+---+---+---+---+
+    |   |   |   |   |   |   |   |   | 6
+    +---+---+---+---+---+---+---+---+
+    |   |   |   |   |   |   |   |   | 7
+    +---+---+---+---+---+---+---+---+
+
 
 
 ---
@@ -2425,6 +3191,11 @@ FMMT666(ASkr)
 [18]: https://twitter.com/FMMT666/status/967551405644025857
 [19]: https://www.pygame.org/wiki/Compilation
 [20]: https://github.com/FMMT666/launchpad.py/issues/38#issuecomment-519698406
+[21]: https://twitter.com/FMMT666/status/1242950069923520519
+[22]: https://twitter.com/FMMT666/status/1242978460454326272
+[23]: https://twitter.com/FMMT666/status/1299842680533463043
+[24]: https://twitter.com/FMMT666/status/1299478117497688073
+[25]: https://www.midifighter.com/
 [51]: https://github.com/4gra/launchpad.py
 [52]: https://github.com/PySimpleGUI/PySimpleGUI
 [53]: https://python-mpd2.readthedocs.io/en/latest/

@@ -1,10 +1,10 @@
 #!/usr/bin/python
 #
 # Stupid flashing/pulsing demo.
-# Works with Mk2 and Pro
+# Works with Mk2, Mini Mk3, Pro, X
 # 
 #
-# FMMT666(ASkr) 10/2018
+# FMMT666(ASkr) 10/2018..8/2020
 # www.askrprojects.net
 #
 
@@ -30,17 +30,30 @@ def main():
 	lp = launchpad.Launchpad()
 
 	# check what we have here and override lp if necessary
-	if lp.Check( 0, "pro" ):
+	if lp.Check( 0, "pad pro" ):
 		lp = launchpad.LaunchpadPro()
-		if lp.Open(0,"pro"):
+		if lp.Open(0,"pad pro"):
 			print("Launchpad Pro")
 			mode = "Pro"
+
+	elif lp.Check( 0, "promk3" ):
+		lp = launchpad.LaunchpadProMk3()
+		if lp.Open( 0 ):
+			print("Launchpad Pro Mk3")
+			mode = "ProMk3"
 			
-	elif lp.Check( 0, "mk2" ):
-		lp = launchpad.LaunchpadMk2()
-		if lp.Open( 0, "mk2" ):
-			print("Launchpad Mk2")
-			mode = "Mk2"
+
+	elif lp.Check( 1, "minimk3" ):
+		lp = launchpad.LaunchpadMiniMk3()
+		if lp.Open( 1, "minimk3" ):
+			print("Launchpad Mk3")
+			mode = "Mk3"
+
+	elif lp.Check( 1, "launchpad x" ) or lp.Check( 1, "lpx" ):
+		lp = launchpad.LaunchpadLPX()
+		if lp.Open( 1 ):
+			print("Launchpad X")
+			mode = "LPX"
 
 	if mode is None:
 		print("Did not find any compatible Launchpads, meh...")
