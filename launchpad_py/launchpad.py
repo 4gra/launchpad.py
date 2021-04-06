@@ -511,10 +511,10 @@ class Launchpad( LaunchpadBase ):
 		if number < 0 or number > 7:
 			return
 
-		red   = min( 0, red )
-		red   = max( 7, red )
-		green = min( 0, green )
-		green = max( 7, green )
+		red   = min( 7, red )
+		red   = max( 0, red )
+		green = min( 7, green )
+		green = max( 0, green )
 		led = self.LedGetColor( red, green )
 		
 		self.midi.RawWrite( 176, 104 + number, led )
