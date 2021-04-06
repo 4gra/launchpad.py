@@ -14,6 +14,9 @@ import random
 from time import sleep
 from collections import deque
 
+pause_btn = 0, 0
+pause_colour = 3, 0
+play_colour = 1, 0
 
 def neighbours(x, y):
     """
@@ -35,13 +38,14 @@ class Snake:
     love from �����
     """
     field_colour = 0, 1
-    food_colour = 2, 2
+    food_colour = 0, 3
     head_colour = 3, 0
     tail_colour = 2, 0
 
     def __init__(self, lp):
         #self.head = 4, 2  # position of the head of the snake
         #self.tail = deque([(3, 2), (2, 2), (1, 2), (0, 2)])
+        self.paused = False
         self.head = random.choice(
             [(x, y) for x in range(0, 7) for y in range(1, 8)]
         )
@@ -58,9 +62,9 @@ class Snake:
         return [self.head] + list(self.tail)
 
     def paint(self):
-        for pos in self.food:
+        for pos in [p for p in self.food if p not in self.tail]:
             self.lp.LedCtrlXY(*pos, *self.food_colour)
-        for pos in [p for p in self.prev if p not in self.tail]:
+        for pos in [p for p in self.prev if p not in self.tail and p not in self.food]:
             self.lp.LedCtrlXY(*pos, *self.field_colour)
         for pos in self.tail:
             self.lp.LedCtrlXY(*pos, *self.tail_colour)
@@ -111,18 +115,24 @@ class Snake:
         # we should just special-case the corners but this worked in a pinch
         if len(new_heads) == 2:
             new_heads = [h for h in new_heads if len(neighbours(*h)) != 2]
-        #print("Choices are {}, having excluded {}".format(new_heads, self.tail))
-        self.head = random.choice(list(new_heads))
+        choices = list(new_heads)
+
+        #print(f"Choices are {choices}, having excluded {self.tail}")
+        self.head = random.choice(choices)
         if self.head in self.food:
             self.eat()
-
 
 def game_loop():
     with LaunchpadPlease(emulate=None) as lp:
         snake = Snake(lp)
         fill(lp, *snake.field_colour)
+        
         while True:
-            snake.random_move()
+            if not snake.paused:
+                snake.random_move()
+                lp.LedCtrlXY(*pause_btn, *pause_colour)
+            else:
+                lp.LedCtrlXY(*pause_btn, *play_colour)
             snake.paint()
             sleep(0.09)
 
@@ -132,7 +142,15 @@ def game_loop():
                     try:
                         (x, y, pressed) = lp.ButtonStateXY()  # raises ValueError when state is None
                         print("+" if pressed else "-", x, y)
+                        # momentary pause
+                        #if (x, y) == (0, 0):
+                        #    snake.paused = pressed
+                        #    continue
                         if pressed:
+                            # toggle pause
+                            if (x, y) == (0, 0):
+                                snake.paused = (not snake.paused)
+                                continue
                             snake.place_food(x, y)
                     except ValueError:  # when state == None
                         break
