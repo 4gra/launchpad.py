@@ -12,7 +12,9 @@ conditions; view the included file LICENCE for details.
 from launchpad_py.utils import *
 from time import sleep
 
-
+# replay functions
+from datetime import datetime, timedelta
+ 
 class Palette(dict):
     # hard-coded palette, ordered to be pretty
     palette = {
@@ -46,6 +48,8 @@ class Palette(dict):
         self.update(self.palette)
         self.lp = lp
         self.paint()
+        self.start_time = datetime.now()
+        print("# START: ", str(self.start_time))
 
     # def swap(self):
     #    self.swaps += [ self.selected ]
@@ -104,15 +108,16 @@ def game_loop():
 
                     try:
                         (x, y, v) = lp.ButtonStateXY()  # raises ValueError when state is None
-                        print("+" if v else "-", x, y)
+                        diff = str(datetime.now() - palette.start_time)
+                        print(diff, "+" if v else "-", x, y)
                         if (x, y) in palette:
                             if v:
                                 colour = palette.select(x, y)
                             else:
                                 colour = palette.unselect(x, y)
-                            print("Get", x, y, colour)
+                            print("# Get", x, y, colour)
                         elif v:  # on press; discard release
-                            print("Set", x, y, colour)  # TODO: print in colour!
+                            print("# Set", x, y, colour)  # TODO: print in colour!
                             lp.LedCtrlXY(x, y, *colour)
                     except ValueError:  # when state == None
                         break
