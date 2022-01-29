@@ -157,7 +157,7 @@ class LaunchpadPlease:
     def __enter__(self):
         self.lp = None
         if self.always_emulate is True:
-            self.lp = LaunchpadEmu()
+            self.lp = launchpad.emu.LaunchpadEmu()
         else:
             try:
                 self.lp = launchpad.Launchpad()
@@ -165,7 +165,7 @@ class LaunchpadPlease:
                 self.lp.ButtonFlush()
             except:
                 if self.always_emulate is not False:
-                    self.lp = launchpad.LaunchpadEmu()
+                    self.lp = launchpad.emu.LaunchpadEmu()
         return self.lp
 
     def __exit__(self, type, value, traceback):
